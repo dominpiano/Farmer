@@ -1,5 +1,7 @@
 #include "Game.h"
 
+namespace Farmer {
+
 using namespace std;
 //Overloading operators
 std::ostream& operator<<(std::ostream& out, const sf::Vector2f v) {
@@ -16,7 +18,6 @@ Game::Game() {
 }
 void Game::initAll() {
 	initVars();
-	initTextures();
 	updateFarmSize();
 	initWindow();
 }
@@ -36,29 +37,50 @@ unsigned int textureHeight;
 //Private
 void Game::initVars() {
 	window = nullptr;
-	WIDTH = 1280; //1280
-	HEIGHT = 720; //720
-	farmSize = 10;
+	WIDTH = 1920; //1280
+	HEIGHT = 1080; //720
+	farmSize = 12;
 }
-void Game::initTextures() {
-	//Background
-	bgTexture.loadFromFile("assets/grass.png");
-	bgSprite.setTexture(bgTexture);
-	//Hover indicator
-	hoverTexture.loadFromFile("assets/hoverIndicate.png");
-	hoverSprite.setTexture(hoverTexture);
-}
+
 int counter = 1;
+int counterSize = 0;
 void Game::updateFarmSize() {
 	for (int i = 0; i < farmSize; i++) {
 		for (int j = 0; j < farmSize; j++) {
-			counter++;
-			if (counter > tiles.size()){
-				tiles.emplace_back(bgSprite);
-				tiles[i * farmSize + j].setPosition(j * 100, i * 100);
-				hoverIndicators.emplace_back(hoverSprite);
-				hoverIndicators[i * farmSize + j].setPosition(j * 100, i * 100);
+			//For enlarging farmSize
+			if (counter > tiles.size()) {
+
+				//Create Tile
+				tiles.emplace_back(Tile(sf::Vector2f(i * 100, j * 100)));
+
+				//Fence placing
+				if (i == 0 || i == farmSize - 1 || j == 0 || j == farmSize - 1) {
+					if (i == 0 && j == 0 || i == 0 && j == farmSize - 1 || i == farmSize - 1 && j == 0 || i == farmSize - 1 && j == farmSize - 1) {
+						if (i == 0 && j > 0) {
+							tiles[counterSize].setFence(SPRITES.fenceAngleSprite, 90);
+						}
+						if (i > 0 && j == farmSize - 1) {
+							tiles[counterSize].setFence(SPRITES.fenceAngleSprite, 180);
+						}
+						if (i == farmSize - 1 && j < farmSize - 1) {
+							tiles[counterSize].setFence(SPRITES.fenceAngleSprite, -90);
+						}
+					}
+					else {
+						if (i == 0 && j > 0) {
+							tiles[counterSize].setFence(SPRITES.fenceSprite, 90);
+						}
+						if (i > 0 && j == farmSize - 1) {
+							tiles[counterSize].setFence(SPRITES.fenceSprite, 180);
+						}
+						if (i == farmSize - 1 && j < farmSize - 1) {
+							tiles[counterSize].setFence(SPRITES.fenceSprite, -90);
+						}
+					}
+				}
 			}
+			counter++;
+			counterSize++;
 		}
 	}
 }
@@ -66,10 +88,10 @@ void Game::updateMousePosition() {
 	mousePos = sf::Mouse::getPosition(*window);
 }
 void Game::initWindow() {
-	window = new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), "Farmer", sf::Style::Titlebar | sf::Style::Close, sf::ContextSettings::ContextSettings(0, 0, 10, 2, 0));
+	window = new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), "Farmer", sf::Style::Titlebar | sf::Style::Fullscreen, sf::ContextSettings::ContextSettings(0, 0, 10, 2, 0));
 	//window->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 	window->setFramerateLimit(30);
-	view.setCenter(WIDTH/2, HEIGHT/2);
+	view.setCenter(WIDTH / 2, HEIGHT / 2);
 	view.setSize(window->getDefaultView().getSize());
 	window->setView(view);
 }
@@ -116,32 +138,35 @@ void Game::pollEvents() {
 			newPos = sf::Vector2f(event.mouseMove.x, event.mouseMove.y);
 			deltaPos = oldPos - newPos;
 
-			viewCenter = view.getCenter() + deltaPos;
-			if (viewCenter.y > 340 && viewCenter.y < 660 && viewCenter.x > 400 && viewCenter.x < 650) {
+			viewCenter = view.getCenter() + deltaPos * zoom;
+			/*if (viewCenter.y > 340 && viewCenter.y < 660 && viewCenter.x > 400 && viewCenter.x < 650) {
 				view.move(deltaPos * zoom);
-			}
+			}*/
+			view.move(deltaPos * zoom);
 
-			cout << view.getCenter() << endl;
+			//cout << view.getCenter() << endl;
 			window->setView(view);
 
 			oldPos = newPos;
 			break;
 
-		case sf::Event::MouseWheelScrolled:
-			if (moving) {
-				break;
-			}
+			//Uncomment it when you are ready for this!!!
+			// 
+			//case sf::Event::MouseWheelScrolled:
+			//	if (moving) {
+			//		break;
+			//	}
 
-			if (event.mouseWheelScroll.delta <= -1)
-				zoom = std::min(4.f, zoom + .2f);
-			else if (event.mouseWheelScroll.delta >= 1)
-				zoom = std::max(.2f, zoom - .2f);
+			//	if (event.mouseWheelScroll.delta <= -1)
+			//		zoom = std::min(2.f, zoom + .2f);
+			//	else if (event.mouseWheelScroll.delta >= 1)
+			//		zoom = std::max(.6f, zoom - .2f);
 
-			//Update the view
-			view.setSize(window->getDefaultView().getSize());
-			view.zoom(zoom);
-			window->setView(view);
-			break;
+			//	//Update the view
+			//	view.setSize(window->getDefaultView().getSize());
+			//	view.zoom(zoom);
+			//	window->setView(view);
+			//	break;
 		}
 	}
 }
@@ -158,15 +183,15 @@ void Game::render() {
 	//Drawing tiles
 	for (int i = 0; i < tiles.size(); i++) {
 		//Drawing
-		window->draw(tiles[i]);
-		if (tiles[i].getGlobalBounds().contains(mousePos.x * zoom + view.getCenter().x - WIDTH/2 * zoom, mousePos.y * zoom + view.getCenter().y - HEIGHT/2 * zoom)) {
+		if (tiles[i].isHovering(mousePos, WIDTH, HEIGHT, zoom, view)) {
 			if (!moving) {
-				window->draw(hoverIndicators[i]);
+				tiles[i].isHovered = true;
 			}
 		}
-		
-		
+		tiles[i].renderTile(*window);
+
 	}
 
 	window->display();
+}
 }

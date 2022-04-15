@@ -8,7 +8,9 @@
 #include "Game.h"
 //WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
 
-int main(){
+namespace Farmer {
+
+int main() {
 
     //Init game
     Game game;
@@ -25,4 +27,5 @@ int main(){
     }
 
     return 0;
+}
 }

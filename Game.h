@@ -1,5 +1,4 @@
 #pragma once
-
 #include <iostream>
 #include <map>
 #include <vector>
@@ -9,6 +8,10 @@
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
+#include "Tile.h"
+#include "Sprites.h"
+
+namespace Farmer {
 
 class Game {
 private:
@@ -19,28 +22,22 @@ private:
 	sf::Event event;
 	sf::View view;
 	sf::Vector2i mousePos;
+	Sprites SPRITES;
 
 	//Farm variables
 	int farmSize;
 
 	//Background things
-	sf::Color bgColor = sf::Color(255, 255, 255);
-		//Textures
-	sf::Texture bgTexture;
-	sf::Texture hoverTexture;
-		//Sprites
-	sf::Sprite bgSprite;
-	sf::Sprite hoverSprite;
-		//Vectors
-	std::vector<sf::Sprite> tiles;
-	std::vector<sf::Sprite> hoverIndicators;
+	sf::Color bgColor = sf::Color(127, 152, 59);
+
+	//Vectors
+	std::vector<Tile> tiles;
 
 	//Time
 	sf::Clock clock;
 
 	//Functions
 	void initVars();
-	void initTextures();
 	void initWindow();
 	void updateFarmSize();
 	void updateMousePosition();
@@ -63,3 +60,5 @@ public:
 	void frameUpdate();
 	void render();
 };
+
+}
