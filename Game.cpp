@@ -1,6 +1,5 @@
 #include "Game.h"
 
-namespace Farmer {
 
 using namespace std;
 //Overloading operators
@@ -193,5 +192,4 @@ void Game::render() {
 	}
 
 	window->display();
-}
 }

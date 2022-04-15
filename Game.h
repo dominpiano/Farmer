@@ -11,8 +11,6 @@
 #include "Tile.h"
 #include "Sprites.h"
 
-namespace Farmer {
-
 class Game {
 private:
 
@@ -60,5 +58,3 @@ public:
 	void frameUpdate();
 	void render();
 };
-
-}
