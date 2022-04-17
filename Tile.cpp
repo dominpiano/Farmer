@@ -7,7 +7,8 @@ Tile::Tile() {
 }
 Tile::Tile(sf::Vector2f pos_) {
 	pos = pos_;
-	backgroundSprite = Sprites::bgSprite;
+	//Positioning sprites
+	backgroundSprite = Sprites::grassSprite;
 	backgroundSprite.setPosition(pos);
 	hoverSprite = Sprites::hoverSprite;
 	hoverSprite.setPosition(pos);
@@ -19,6 +20,10 @@ Tile::~Tile() {
 //Functions
 sf::Sprite Tile::getBg() {
 	return backgroundSprite;
+}
+void Tile::setBg(sf::Sprite bgSpr) {
+	backgroundSprite = bgSpr;
+	backgroundSprite.setPosition(pos);
 }
 void Tile::setFence(sf::Sprite spr, int rotation = 0) {
 	hasFence = true;
@@ -44,7 +49,7 @@ void Tile::renderTile(sf::RenderWindow& window) {
 	if (hasFence) {
 		window.draw(fenceSprite);
 	}
-	if (isHovered && !hasFence) {
+	if (isHovered) {
 		window.draw(hoverSprite);
 	}
 }

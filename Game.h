@@ -20,24 +20,47 @@ private:
 	sf::Event event;
 	sf::View view;
 	sf::Vector2i mousePos;
+	sf::Vector2i relMousePos; //VERY IMPORTANT!!!! MOUSE POSITION RELATIVE TO VIEWPORT - REGARDLESS OF VIEW, COORDINATES THE SAME AS NORMAL
+	sf::Vector2f oldPos, newPos, deltaPos;
+	sf::Vector2f viewCenter;
+	bool moving = false;
+	float zoom = 1;
+	int whichTileHovered = 0; //Stores a number of tile which is actually hovered on
 
 	//Farm variables
 	int farmSize;
+
+	//Tool things
+		//Tool utils
+	int toolChosen = 0; // 0-hand, 1-shovel
+	sf::Sprite toolChooseSprite;
+		//Types of tool
+	sf::Sprite shovelSprite;
 
 	//Background things
 	sf::Color bgColor = sf::Color(127, 152, 59);
 
 	//Vectors
 	std::vector<Tile> tiles;
+	std::vector<sf::Sprite> backGround;
 
 	//Time
 	sf::Clock clock;
 
+	//Helper functions
+	sf::Vector2f getRightDownCorner();
+
 	//Functions
 	void initVars();
+	void initSpritesUI();
 	void initWindow();
 	void updateFarmSize();
 	void updateMousePosition();
+	void updateTools();
+
+	//For rendering
+	void renderTiles();
+	void renderTools();
 
 public:
 

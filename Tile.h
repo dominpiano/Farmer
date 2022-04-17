@@ -16,7 +16,6 @@ private:
 	sf::Sprite backgroundSprite;
 	sf::Sprite hoverSprite;
 	sf::Sprite fenceSprite;
-	bool hasFence = false;
 	sf::Vector2f pos;
 public:
 	//Constructors & Destructors
@@ -25,9 +24,11 @@ public:
 	~Tile();
 	//Variables
 	bool isHovered;
+	bool hasFence = false;
 
 	//Functions
 	sf::Sprite getBg();
+	void setBg(sf::Sprite bgSpr);
 	void setFence(sf::Sprite spr, int rotation);
 	void renderTile(sf::RenderWindow& window);
 };
