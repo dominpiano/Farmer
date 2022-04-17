@@ -50,30 +50,36 @@ void Game::updateFarmSize() {
 			if (counter > tiles.size()) {
 
 				//Create Tile
-				tiles.emplace_back(Tile(sf::Vector2f(i * 100, j * 100)));
+				tiles.emplace_back(Tile(sf::Vector2f(j * 100, i * 100)));
 
 				//Fence placing
 				if (i == 0 || i == farmSize - 1 || j == 0 || j == farmSize - 1) {
 					if (i == 0 && j == 0 || i == 0 && j == farmSize - 1 || i == farmSize - 1 && j == 0 || i == farmSize - 1 && j == farmSize - 1) {
-						if (i == 0 && j > 0) {
-							tiles[counterSize].setFence(SPRITES.fenceAngleSprite, 90);
+						if (i == 0 && j == 0) {
+							tiles[counterSize].setFence(Sprites::fenceAngleSprite, 0);
 						}
-						if (i > 0 && j == farmSize - 1) {
-							tiles[counterSize].setFence(SPRITES.fenceAngleSprite, 180);
+						if (i == 0 && j == farmSize - 1) {
+							tiles[counterSize].setFence(Sprites::fenceAngleSprite, 90);
 						}
-						if (i == farmSize - 1 && j < farmSize - 1) {
-							tiles[counterSize].setFence(SPRITES.fenceAngleSprite, -90);
+						if (i == farmSize - 1 && j == farmSize - 1) {
+							tiles[counterSize].setFence(Sprites::fenceAngleSprite, 180);
+						}
+						if (i == farmSize - 1 && j == 0) {
+							tiles[counterSize].setFence(Sprites::fenceAngleSprite, -90);
 						}
 					}
 					else {
+						if (i > 0 && j == 0) {
+							tiles[counterSize].setFence(Sprites::fenceSprite, 0);
+						}
 						if (i == 0 && j > 0) {
-							tiles[counterSize].setFence(SPRITES.fenceSprite, 90);
+							tiles[counterSize].setFence(Sprites::fenceSprite, 90);
 						}
 						if (i > 0 && j == farmSize - 1) {
-							tiles[counterSize].setFence(SPRITES.fenceSprite, 180);
+							tiles[counterSize].setFence(Sprites::fenceSprite, 180);
 						}
 						if (i == farmSize - 1 && j < farmSize - 1) {
-							tiles[counterSize].setFence(SPRITES.fenceSprite, -90);
+							tiles[counterSize].setFence(Sprites::fenceSprite, -90);
 						}
 					}
 				}
@@ -89,7 +95,7 @@ void Game::updateMousePosition() {
 void Game::initWindow() {
 	window = new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), "Farmer", sf::Style::Titlebar | sf::Style::Fullscreen, sf::ContextSettings::ContextSettings(0, 0, 10, 2, 0));
 	//window->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
-	window->setFramerateLimit(30);
+	window->setFramerateLimit(60);
 	view.setCenter(WIDTH / 2, HEIGHT / 2);
 	view.setSize(window->getDefaultView().getSize());
 	window->setView(view);
@@ -182,13 +188,14 @@ void Game::render() {
 	//Drawing tiles
 	for (int i = 0; i < tiles.size(); i++) {
 		//Drawing
-		if (tiles[i].isHovering(mousePos, WIDTH, HEIGHT, zoom, view)) {
-			if (!moving) {
-				tiles[i].isHovered = true;
-			}
+		if (tiles[i].getBg().getGlobalBounds().contains(mousePos.x * zoom + view.getCenter().x - WIDTH / 2 * zoom, mousePos.y * zoom + view.getCenter().y - HEIGHT / 2 * zoom)) {
+			tiles[i].isHovered = true;
+		}
+		else {
+			tiles[i].isHovered = false;
 		}
 		tiles[i].renderTile(*window);
-
+		
 	}
 
 	window->display();

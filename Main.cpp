@@ -13,6 +13,7 @@ int main() {
 
     //Init game
     Game game;
+    Sprites spr;
     game.initAll();
 
     while (game.isWindowOpen()) {

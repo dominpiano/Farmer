@@ -20,7 +20,6 @@ private:
 	sf::Event event;
 	sf::View view;
 	sf::Vector2i mousePos;
-	Sprites SPRITES;
 
 	//Farm variables
 	int farmSize;

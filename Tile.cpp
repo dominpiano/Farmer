@@ -2,33 +2,32 @@
 
 
 //Constructors & Destructors
+Tile::Tile() {
+	
+}
 Tile::Tile(sf::Vector2f pos_) {
 	pos = pos_;
-	tmpSprite = SPRITES.bgSprite;
-	tmpSprite.setPosition(pos);
+	backgroundSprite = Sprites::bgSprite;
+	backgroundSprite.setPosition(pos);
+	hoverSprite = Sprites::hoverSprite;
+	hoverSprite.setPosition(pos);
 }
 Tile::~Tile() {
 
 }
 
 //Functions
-bool Tile::isHovering(sf::Vector2i mousePos, int WIDTH, int HEIGHT, int zoom, sf::View view) {
-	if (tmpSprite.getGlobalBounds().contains(mousePos.x * zoom + view.getCenter().x - WIDTH / 2 * zoom, mousePos.y * zoom + view.getCenter().y - HEIGHT / 2 * zoom)) {
-		isHovered = true;
-	}
-	else {
-		isHovered = false;
-	}
-	return isHovered;
+sf::Sprite Tile::getBg() {
+	return backgroundSprite;
 }
-void Tile::setPos(sf::Vector2f position) {
-	pos = position;
-}
-void Tile::setFence(sf::Sprite spr, int rotation) {
+void Tile::setFence(sf::Sprite spr, int rotation = 0) {
 	hasFence = true;
 	fenceSprite = spr;
 	fenceSprite.setRotation(rotation);
 	switch (rotation){
+	case 0:
+		fenceSprite.setPosition(pos.x, pos.y);
+		break;
 	case 90:
 		fenceSprite.setPosition(pos.x + 100, pos.y);
 		break;
@@ -41,11 +40,11 @@ void Tile::setFence(sf::Sprite spr, int rotation) {
 	}
 }
 void Tile::renderTile(sf::RenderWindow& window) {
-	window.draw(tmpSprite);
+	window.draw(backgroundSprite);
 	if (hasFence) {
 		window.draw(fenceSprite);
 	}
 	if (isHovered && !hasFence) {
-		window.draw(SPRITES.hoverSprite);
+		window.draw(hoverSprite);
 	}
 }

@@ -13,21 +13,21 @@
 
 class Tile {
 private:
-	sf::Sprite tmpSprite;
+	sf::Sprite backgroundSprite;
+	sf::Sprite hoverSprite;
 	sf::Sprite fenceSprite;
-	bool hasFence;
+	bool hasFence = false;
 	sf::Vector2f pos;
-	Sprites SPRITES;
 public:
 	//Constructors & Destructors
+	Tile();
 	Tile(sf::Vector2f pos_);
 	~Tile();
 	//Variables
 	bool isHovered;
 
 	//Functions
-	bool isHovering(sf::Vector2i mousePos, int WIDTH, int HEIGHT, int zoom, sf::View view);
-	void setPos(sf::Vector2f position);
+	sf::Sprite getBg();
 	void setFence(sf::Sprite spr, int rotation);
 	void renderTile(sf::RenderWindow& window);
 };

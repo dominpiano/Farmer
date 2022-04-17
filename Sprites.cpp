@@ -1,12 +1,21 @@
 #include "Sprites.h"
 
 Sprites::Sprites() {
+	std::cout << "konstr" << std::endl;
 	bgTexture.loadFromFile("assets/grass.png");
-	bgSprite.setTexture(bgTexture);
+	Sprites::bgSprite.setTexture(bgTexture);
+
 	hoverTexture.loadFromFile("assets/hoverIndicate.png");
-	hoverSprite.setTexture(hoverTexture);
+	Sprites::hoverSprite.setTexture(hoverTexture);
+
 	fenceTexture.loadFromFile("assets/fence.png");
-	fenceSprite.setTexture(fenceTexture);
+	Sprites::fenceSprite.setTexture(fenceTexture);
+
 	fenceAngleTexture.loadFromFile("assets/fenceAngle.png");
-	fenceAngleSprite.setTexture(fenceAngleTexture);
+	Sprites::fenceAngleSprite.setTexture(fenceAngleTexture);
 }
+
+sf::Sprite Sprites::bgSprite;
+sf::Sprite Sprites::hoverSprite;
+sf::Sprite Sprites::fenceSprite;
+sf::Sprite Sprites::fenceAngleSprite;
