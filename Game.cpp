@@ -30,13 +30,15 @@ Game::~Game() {
 	delete this->window;
 }
 
-//Getters Accessors
-const bool Game::isWindowOpen() {
-	return this->window->isOpen();
+void Game::initSpritesUI() {
+	//Tools
+	toolChooseSprite = Sprites::hoverSprite;
+	toolChooseSprite.setScale(0.8f, 0.8f);
+	handToolSprite = Sprites::handToolSprite;
+	handToolSprite.setPosition(WIDTH - 80, HEIGHT - 80);
+	shovelToolSprite = Sprites::shovelToolSprite;
+	shovelToolSprite.setPosition(WIDTH - 160, HEIGHT - 80);
 }
-
-
-//Private
 void Game::initVars() {
 	window = nullptr;
 	WIDTH = 1920;
@@ -52,16 +54,6 @@ void Game::initVars() {
 		}
 	}
 }
-
-void Game::initSpritesUI(){
-	toolChooseSprite = Sprites::hoverSprite;
-	toolChooseSprite.setScale(0.8f, 0.8f);
-	handToolSprite = Sprites::handToolSprite;
-	handToolSprite.setPosition(WIDTH - 80, HEIGHT - 80);
-	shovelToolSprite = Sprites::shovelToolSprite;
-	shovelToolSprite.setPosition(WIDTH - 160, HEIGHT - 80);
-}
-
 void Game::initWindow() {
 	window = new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), "Farmer", sf::Style::Titlebar | sf::Style::Fullscreen, sf::ContextSettings::ContextSettings(0, 0, 10, 2, 0));
 	//window->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
@@ -69,6 +61,11 @@ void Game::initWindow() {
 	view.setCenter(WIDTH / 2, HEIGHT / 2);
 	view.setSize(window->getDefaultView().getSize());
 	window->setView(view);
+}
+
+//Getters Accessors
+const bool Game::isWindowOpen() {
+	return this->window->isOpen();
 }
 
 int counter = 1;
@@ -149,19 +146,35 @@ void Game::pollEvents() {
 			if (event.key.code == sf::Keyboard::Escape) {
 				window->close();
 			}
+			else if (event.key.code == sf::Keyboard::E) {
+				if (!isInventoryOpen) {
+					inventory.updatePosition(view.getCenter());
+					isInventoryOpen = !isInventoryOpen;
+				}
+				else {
+					isInventoryOpen = !isInventoryOpen;
+				}
+			}
 			break;
 
 		case sf::Event::MouseButtonPressed:
 			if (event.mouseButton.button == 0) {
-				//Tool check
-				if (handToolSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
-					toolChosen = 0;
+
+				//We don't want to move if inventory is opened
+				if (isInventoryOpen) {
+					inventory.checkTabChanged(relMousePos);
 				}
-				if (shovelToolSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
-					toolChosen = 1;
+				else {
+					//Tool check
+					if (handToolSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
+						toolChosen = 0;
+					}
+					if (shovelToolSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
+						toolChosen = 1;
+					}
+					moving = true;
+					oldPos = sf::Vector2f(mousePos);
 				}
-				moving = true;
-				oldPos = sf::Vector2f(mousePos);
 			}
 			else if (event.mouseButton.button == 1) {
 				toolChosen = 0;
@@ -242,6 +255,9 @@ void Game::render() {
 
 	renderTiles();
 	renderTools();
+	if (isInventoryOpen) {
+		renderInventory();
+	}
 
 	window->display();
 }
@@ -270,4 +286,7 @@ void Game::renderTools() {
 	window->draw(handToolSprite);
 	window->draw(shovelToolSprite);
 	window->draw(toolChooseSprite);
+}
+void Game::renderInventory() {
+	inventory.renderInventory(*window);
 }

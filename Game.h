@@ -10,6 +10,7 @@
 #include <SFML/Network.hpp>
 #include "Tile.h"
 #include "Sprites.h"
+#include "Inventory.h"
 
 class Game {
 private:
@@ -19,6 +20,8 @@ private:
 	int HEIGHT; //720
 	sf::Event event;
 	sf::View view;
+
+	//Positioning
 	sf::Vector2i mousePos;
 	sf::Vector2i relMousePos; //VERY IMPORTANT!!!! MOUSE POSITION RELATIVE TO VIEWPORT - REGARDLESS OF VIEW, COORDINATES THE SAME AS NORMAL
 	sf::Vector2f oldPos, newPos, deltaPos;
@@ -38,9 +41,13 @@ private:
 	sf::Sprite shovelToolSprite;
 	sf::Sprite handToolSprite;
 
+	//Inventory
+	bool isInventoryOpen = false;
+	Inventory inventory;
+
 	//Background things
 	sf::Color bgColor = sf::Color(127, 152, 59);
-
+	
 	//Vectors
 	std::vector<Tile> tiles;
 	std::vector<sf::Sprite> backGround;
@@ -62,6 +69,7 @@ private:
 	//For rendering
 	void renderTiles();
 	void renderTools();
+	void renderInventory();
 
 public:
 

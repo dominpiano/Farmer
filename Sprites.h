@@ -14,6 +14,13 @@ private:
 	sf::Texture shovelToolTexture;
 	sf::Texture handToolTexture;
 
+	//Inventory
+	sf::Texture inventoryTexture;
+	sf::Texture invActiveTabTexture;
+	sf::Texture invDeactiveTabTexture;
+	sf::Texture shopActiveTabTexture;
+	sf::Texture shopDeactiveTabTexture;
+
 	//Hover things
 	sf::Texture hoverTexture;
 
@@ -28,6 +35,13 @@ public:
 	//Tools
 	static sf::Sprite shovelToolSprite;
 	static sf::Sprite handToolSprite;
+
+	//Inventory
+	static sf::Sprite inventorySprite;
+	static sf::Sprite invActiveTabSprite;
+	static sf::Sprite invDeactiveTabSprite;
+	static sf::Sprite shopActiveTabSprite;
+	static sf::Sprite shopDeactiveTabSprite;
 
 	//Hover things
 	static sf::Sprite hoverSprite;
