@@ -42,6 +42,7 @@ void Game::initVars() {
 	WIDTH = 1920;
 	HEIGHT = 1080;
 	farmSize = 12;
+	//Setting background
 	sf::Sprite tmp;
 	for (int i = -2; i < 16; i++) {
 		for (int j = -8; j < 20; j++) {
@@ -52,9 +53,13 @@ void Game::initVars() {
 	}
 }
 
-void Game::initSpritesUI() {
-	shovelSprite = Sprites::shovelSprite;
-	shovelSprite.setPosition(WIDTH - 80, HEIGHT - 80);
+void Game::initSpritesUI(){
+	toolChooseSprite = Sprites::hoverSprite;
+	toolChooseSprite.setScale(0.8f, 0.8f);
+	handToolSprite = Sprites::handToolSprite;
+	handToolSprite.setPosition(WIDTH - 80, HEIGHT - 80);
+	shovelToolSprite = Sprites::shovelToolSprite;
+	shovelToolSprite.setPosition(WIDTH - 160, HEIGHT - 80);
 }
 
 void Game::initWindow() {
@@ -122,12 +127,11 @@ void Game::updateMousePosition() {
 void Game::updateTools() {
 	switch (toolChosen) {
 	case 0:
+		toolChooseSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 80);
 		break;
 
 	case 1:
-		toolChooseSprite = Sprites::hoverSprite;
-		toolChooseSprite.setScale(0.8f, 0.8f);
-		toolChooseSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 80);
+		toolChooseSprite.setPosition(getRightDownCorner().x - 160, getRightDownCorner().y - 80);
 	}
 }
 
@@ -150,7 +154,10 @@ void Game::pollEvents() {
 		case sf::Event::MouseButtonPressed:
 			if (event.mouseButton.button == 0) {
 				//Tool check
-				if (shovelSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
+				if (handToolSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
+					toolChosen = 0;
+				}
+				if (shovelToolSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
 					toolChosen = 1;
 				}
 				moving = true;
@@ -166,7 +173,7 @@ void Game::pollEvents() {
 				switch (toolChosen) {
 				case 1:
 					//Check if mouse is still over this particular Tile, then change the background
-					if (tiles[whichTileHovered].getBg().getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
+					if (tiles[whichTileHovered].getBg().getGlobalBounds().contains(relMousePos.x, relMousePos.y) && newPos != oldPos) {
 						tiles[whichTileHovered].setBg(Sprites::soil0Sprite);
 					}
 					break;
@@ -192,7 +199,8 @@ void Game::pollEvents() {
 			}
 
 			//Setting Tools Sprites Positions
-			shovelSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 80);
+			handToolSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 80);
+			shovelToolSprite.setPosition(getRightDownCorner().x - 160, getRightDownCorner().y - 80);
 			
 			//Setting view
 			window->setView(view);
@@ -259,8 +267,7 @@ void Game::renderTiles() {
 	}
 }
 void Game::renderTools() {
-	window->draw(shovelSprite);
-	if (toolChosen != 0) {
-		window->draw(toolChooseSprite);
-	}
+	window->draw(handToolSprite);
+	window->draw(shovelToolSprite);
+	window->draw(toolChooseSprite);
 }

@@ -8,8 +8,10 @@ Sprites::Sprites() {
 	soil0Sprite.setTexture(soil0Texture);
 
 	//Tools
-	shovelTexture.loadFromFile("assets/shovel.png");
-	shovelSprite.setTexture(shovelTexture);
+	shovelToolTexture.loadFromFile("assets/shovel.png");
+	shovelToolSprite.setTexture(shovelToolTexture);
+	handToolTexture.loadFromFile("assets/hand.png");
+	handToolSprite.setTexture(handToolTexture);
 
 	//Hover things
 	hoverTexture.loadFromFile("assets/hoverIndicate.png");
@@ -29,7 +31,8 @@ sf::Sprite Sprites::grassSprite;
 sf::Sprite Sprites::soil0Sprite;
 
 //Tools
-sf::Sprite Sprites::shovelSprite;
+sf::Sprite Sprites::shovelToolSprite;
+sf::Sprite Sprites::handToolSprite;
 
 //Hover things
 sf::Sprite Sprites::hoverSprite;

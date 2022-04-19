@@ -35,7 +35,8 @@ private:
 	int toolChosen = 0; // 0-hand, 1-shovel
 	sf::Sprite toolChooseSprite;
 		//Types of tool
-	sf::Sprite shovelSprite;
+	sf::Sprite shovelToolSprite;
+	sf::Sprite handToolSprite;
 
 	//Background things
 	sf::Color bgColor = sf::Color(127, 152, 59);

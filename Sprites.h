@@ -11,7 +11,8 @@ private:
 	sf::Texture soil0Texture;
 
 	//Tools
-	sf::Texture shovelTexture;
+	sf::Texture shovelToolTexture;
+	sf::Texture handToolTexture;
 
 	//Hover things
 	sf::Texture hoverTexture;
@@ -25,7 +26,8 @@ public:
 	static sf::Sprite soil0Sprite;
 
 	//Tools
-	static sf::Sprite shovelSprite;
+	static sf::Sprite shovelToolSprite;
+	static sf::Sprite handToolSprite;
 
 	//Hover things
 	static sf::Sprite hoverSprite;
