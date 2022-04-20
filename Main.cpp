@@ -12,8 +12,8 @@
 int main() {
 
     //Init game
-    Game game;
     Sprites spr;
+    Game game;
     game.initAll();
 
     while (game.isWindowOpen()) {

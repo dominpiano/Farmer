@@ -271,7 +271,7 @@ void Game::renderTiles() {
 	//Drawing tiles
 	for (int i = 0; i < tiles.size(); i++) {
 		//Drawing
-		if (tiles[i].getBg().getGlobalBounds().contains(relMousePos.x, relMousePos.y) && !moving && !tiles[i].hasFence) {
+		if (tiles[i].getBg().getGlobalBounds().contains(relMousePos.x, relMousePos.y) && !moving && !tiles[i].hasFence && !isInventoryOpen) {
 			tiles[i].isHovered = true;
 			whichTileHovered = i;
 		}
@@ -289,4 +289,5 @@ void Game::renderTools() {
 }
 void Game::renderInventory() {
 	inventory.renderInventory(*window);
+	//window->draw(inventory.inventorySprite);
 }

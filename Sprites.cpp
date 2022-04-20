@@ -25,6 +25,10 @@ Sprites::Sprites() {
 	shopDeactiveTabTexture.loadFromFile("assets/textures/inventory/shopDeactiveTab.png");
 	shopDeactiveTabSprite.setTexture(shopDeactiveTabTexture);
 
+	//Shop cards
+	cardBackgroundTexture.loadFromFile("assets/textures/shopCard/cardBackground.png");
+	cardBackgroundSprite.setTexture(cardBackgroundTexture);
+
 	//Hover things
 	hoverTexture.loadFromFile("assets/textures/background/hoverIndicate.png");
 	hoverSprite.setTexture(hoverTexture);
@@ -52,6 +56,9 @@ sf::Sprite Sprites::invActiveTabSprite;
 sf::Sprite Sprites::invDeactiveTabSprite;
 sf::Sprite Sprites::shopActiveTabSprite;
 sf::Sprite Sprites::shopDeactiveTabSprite;
+
+//Shop cards
+sf::Sprite Sprites::cardBackgroundSprite;
 
 //Hover things
 sf::Sprite Sprites::hoverSprite;

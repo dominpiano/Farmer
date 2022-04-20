@@ -21,6 +21,9 @@ private:
 	sf::Texture shopActiveTabTexture;
 	sf::Texture shopDeactiveTabTexture;
 
+	//Shop cards
+	sf::Texture cardBackgroundTexture;
+
 	//Hover things
 	sf::Texture hoverTexture;
 
@@ -42,6 +45,9 @@ public:
 	static sf::Sprite invDeactiveTabSprite;
 	static sf::Sprite shopActiveTabSprite;
 	static sf::Sprite shopDeactiveTabSprite;
+
+	//Shop cards
+	static sf::Sprite cardBackgroundSprite;
 
 	//Hover things
 	static sf::Sprite hoverSprite;
