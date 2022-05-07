@@ -30,9 +30,14 @@ Sprites::Sprites() {
 	shopActiveTabSprite.setTexture(shopActiveTabTexture);
 	shopDeactiveTabTexture.loadFromFile("assets/textures/inventory/shopDeactiveTab.png");
 	shopDeactiveTabSprite.setTexture(shopDeactiveTabTexture);
+	buyButtonGrayTexture.loadFromFile("assets/textures/inventory/buyButtonGray.png");
+	buyButtonGraySprite.setTexture(buyButtonGrayTexture);
+	buyButtonColorTexture.loadFromFile("assets/textures/inventory/buyButtonColor.png");
+	buyButtonColorSprite.setTexture(buyButtonColorTexture);
 
 	//Shop cards
 	cardBackgroundTexture.loadFromFile("assets/textures/shopCards/cardBackground.png");
+	//cardBackgroundTexture.setSmooth(true);
 	cardBackgroundSprite.setTexture(cardBackgroundTexture);
 
 	//Hover things
@@ -66,6 +71,8 @@ sf::Sprite Sprites::invActiveTabSprite;
 sf::Sprite Sprites::invDeactiveTabSprite;
 sf::Sprite Sprites::shopActiveTabSprite;
 sf::Sprite Sprites::shopDeactiveTabSprite;
+sf::Sprite Sprites::buyButtonGraySprite;
+sf::Sprite Sprites::buyButtonColorSprite;
 
 //Shop cards
 sf::Sprite Sprites::cardBackgroundSprite;

@@ -15,21 +15,27 @@
 class ShopCard{
 private:
 	sf::Vector2f cardPos;
-	sf::Sprite cardBackgroundSprite;
 	sf::Sprite itemSprite;
 
 	sf::Text itemTitleText;
 	sf::Text itemDescriptionText;
 
 	sf::Sprite buttonBuySprite;
+
+	bool isSelected;
 public:
 	//Constructos
 	ShopCard();
 	ShopCard(sf::Sprite item, sf::String title);
 	
+	sf::Sprite cardBackgroundSprite;
+
 	//Functions
 	void setDescr(sf::String descr);
 	void setPosition(sf::Vector2f pos);
+	void setSelected(bool toggle);
+	bool getSelected();
+	sf::Sprite getItem();
 	sf::Vector2f getMainPosition();
 	void renderCard(sf::RenderWindow& window);
 };

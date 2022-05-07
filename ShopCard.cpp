@@ -42,6 +42,24 @@ void ShopCard::setDescr(sf::String descr) {
 	itemDescriptionText.setFillColor(sf::Color::Black);
 	itemDescriptionText.setString(append);
 }
+void ShopCard::setSelected(bool toggle) {
+	if (toggle) {
+		cardBackgroundSprite.setScale(1.05f, 1.05f);
+		cardBackgroundSprite.setPosition(cardPos.x - 5, cardPos.y - 7.5);
+		isSelected = true;
+	}
+	else {
+		cardBackgroundSprite.setScale(1, 1);
+		cardBackgroundSprite.setPosition(cardPos);
+		isSelected = false;
+	}	
+}
+bool ShopCard::getSelected() {
+	return isSelected;
+}
+sf::Sprite ShopCard::getItem() {
+	return itemSprite;
+}
 void ShopCard::setPosition(sf::Vector2f pos) {
 	cardPos = pos;
 	cardBackgroundSprite.setPosition(cardPos);

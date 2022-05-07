@@ -24,6 +24,8 @@ private:
 	sf::Texture invDeactiveTabTexture;
 	sf::Texture shopActiveTabTexture;
 	sf::Texture shopDeactiveTabTexture;
+	sf::Texture buyButtonGrayTexture;
+	sf::Texture buyButtonColorTexture;
 
 	//Shop cards
 	sf::Texture cardBackgroundTexture;
@@ -53,6 +55,8 @@ public:
 	static sf::Sprite invDeactiveTabSprite;
 	static sf::Sprite shopActiveTabSprite;
 	static sf::Sprite shopDeactiveTabSprite;
+	static sf::Sprite buyButtonGraySprite;
+	static sf::Sprite buyButtonColorSprite;
 
 	//Shop cards
 	static sf::Sprite cardBackgroundSprite;

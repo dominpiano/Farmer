@@ -127,9 +127,12 @@ void Game::updateTools() {
 	case 0:
 		toolChooseSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 80);
 		break;
-
 	case 1:
 		toolChooseSprite.setPosition(getRightDownCorner().x - 160, getRightDownCorner().y - 80);
+		break;
+	case 2:
+		toolChooseSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
+		break;
 	}
 }
 void Game::setupInventory() {
@@ -165,7 +168,7 @@ void Game::pollEvents() {
 
 					//Setting up position of shop cards
 					shopCards[0].setPosition(inventory.getMainPosition() + sf::Vector2f(40, 240));
-					shopCards[1].setPosition(inventory.getMainPosition() + sf::Vector2f(250, 240));
+					shopCards[1].setPosition(inventory.getMainPosition() + sf::Vector2f(260, 240));
 
 
 					isInventoryOpen = !isInventoryOpen;
@@ -182,6 +185,21 @@ void Game::pollEvents() {
 				//We don't want to move if inventory is opened
 				if (isInventoryOpen) {
 					inventory.checkTabChanged(relMousePos);
+					if (inventory.whichTabActive == 1) {
+						inventory.activateBuyButton(false);
+						for (auto& i : shopCards) {
+							if (inventory.buyButtonSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y) && i.getSelected()) {
+								toolChosen = 2;
+								seedChosenSprite = i.getItem();
+								seedChosenSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
+							}
+							i.setSelected(false);
+							if (i.cardBackgroundSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
+								i.setSelected(true);
+								inventory.activateBuyButton(true);
+							}
+						}
+					}
 				}
 				else {
 					//Tool check
@@ -233,6 +251,7 @@ void Game::pollEvents() {
 			//Setting Tools Sprites Positions
 			handToolSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 80);
 			shovelToolSprite.setPosition(getRightDownCorner().x - 160, getRightDownCorner().y - 80);
+			seedChosenSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
 			
 			//Setting view
 			window->setView(view);
@@ -305,6 +324,7 @@ void Game::renderTools() {
 	window->draw(handToolSprite);
 	window->draw(shovelToolSprite);
 	window->draw(toolChooseSprite);
+	window->draw(seedChosenSprite);
 }
 void Game::renderInventory() {
 	inventory.renderInventory(*window);

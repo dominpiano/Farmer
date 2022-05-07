@@ -22,8 +22,10 @@ private:
 public:
 	//Constructors & functions
 	sf::Sprite inventorySprite;
+	sf::Sprite buyButtonSprite;
 	int whichTabActive = 0;
 	Inventory();
+	void activateBuyButton(bool toggle);
 	void updatePosition(sf::Vector2f center);
 	void checkTabChanged(sf::Vector2i mousePos);
 	sf::Vector2f getMainPosition();
