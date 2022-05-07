@@ -14,6 +14,10 @@ private:
 	sf::Texture shovelToolTexture;
 	sf::Texture handToolTexture;
 
+	//Crops and seeds
+	sf::Texture carrotSeedsTexture;
+	sf::Texture cucumberSeedsTexture;
+
 	//Inventory
 	sf::Texture inventoryTexture;
 	sf::Texture invActiveTabTexture;
@@ -38,6 +42,10 @@ public:
 	//Tools
 	static sf::Sprite shovelToolSprite;
 	static sf::Sprite handToolSprite;
+
+	//Crops and seeds
+	static sf::Sprite carrotSeedsSprite;
+	static sf::Sprite cucumberSeedsSprite;
 
 	//Inventory
 	static sf::Sprite inventorySprite;

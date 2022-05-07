@@ -1,7 +1,7 @@
 #include "Resources.h"
 
 Resources::Resources() {
-	//titleFont.loadFromFile();
+	titleFont.loadFromFile("assets/fonts/crayon_kids.ttf");
 	descriptionFont.loadFromFile("assets/fonts/simply_olive.ttf");
 }
 

@@ -14,8 +14,8 @@ ShopCard::ShopCard(sf::Sprite item, sf::String title) {
 	cardBackgroundSprite = Sprites::cardBackgroundSprite;
 	itemSprite = item;
 
-	itemTitleText.setFont(Resources::descriptionFont);
-	itemTitleText.setCharacterSize(26);
+	itemTitleText.setFont(Resources::titleFont);
+	itemTitleText.setCharacterSize(24);
 	itemTitleText.setFillColor(sf::Color::Black);
 	itemTitleText.setString(title);
 }
@@ -32,13 +32,13 @@ void ShopCard::setDescr(sf::String descr) {
 		if (i == 10) {
 			counter = 0;
 		}
-		if (counter > 20 && i == 32) {
+		if (counter > 14 && i == 32) {
 			append += "\n";
 			counter = 0;
 		}
 	}
-	itemDescriptionText.setFont(Resources::descriptionFont);
-	itemDescriptionText.setCharacterSize(20);
+	itemDescriptionText.setFont(Resources::titleFont);
+	itemDescriptionText.setCharacterSize(19);
 	itemDescriptionText.setFillColor(sf::Color::Black);
 	itemDescriptionText.setString(append);
 }
@@ -46,9 +46,8 @@ void ShopCard::setPosition(sf::Vector2f pos) {
 	cardPos = pos;
 	cardBackgroundSprite.setPosition(cardPos);
 	itemSprite.setPosition(getMainPosition().x + 60, getMainPosition().y + 20);
-	itemTitleText.setPosition(getMainPosition().x + 20, getMainPosition().y + 120);
-	itemDescriptionText.setPosition(getMainPosition().x + 20, getMainPosition().y + 170);
-	//std::cout << cardPos << std::endl;
+	itemTitleText.setPosition(getMainPosition().x + 15, getMainPosition().y + 120);
+	itemDescriptionText.setPosition(getMainPosition().x + 15, getMainPosition().y + 170);
 }
 void ShopCard::renderCard(sf::RenderWindow& window) {
 	window.draw(cardBackgroundSprite);

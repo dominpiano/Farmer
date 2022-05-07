@@ -133,8 +133,10 @@ void Game::updateTools() {
 	}
 }
 void Game::setupInventory() {
-	shopCards.emplace_back(ShopCard(Sprites::shovelToolSprite, "Nothing"));
-	shopCards[0].setDescr(L"Nothing to say about this i guess well counts only if the text is long enough");
+	shopCards.emplace_back(ShopCard(Sprites::carrotSeedsSprite, "Carrot Seeds"));
+	shopCards[0].setDescr(L"Well, seeds of a carrot, what to say more?");
+	shopCards.emplace_back(ShopCard(Sprites::cucumberSeedsSprite, "Cucumber Seeds"));
+	shopCards[1].setDescr(L"Interesting seeds of a cucumber, remember to water it often!");
 }
 
 //Public
@@ -150,13 +152,20 @@ void Game::pollEvents() {
 		case sf::Event::KeyPressed:
 			//Keys pressed
 			if (event.key.code == sf::Keyboard::Escape) {
-				window->close();
+				if (isInventoryOpen) {
+					isInventoryOpen = false;
+				}
+				else {
+					window->close();
+				}
 			}
 			else if (event.key.code == sf::Keyboard::E) {
 				if (!isInventoryOpen) {
 					inventory.updatePosition(view.getCenter());
+
 					//Setting up position of shop cards
 					shopCards[0].setPosition(inventory.getMainPosition() + sf::Vector2f(40, 240));
+					shopCards[1].setPosition(inventory.getMainPosition() + sf::Vector2f(250, 240));
 
 
 					isInventoryOpen = !isInventoryOpen;
@@ -301,5 +310,6 @@ void Game::renderInventory() {
 	inventory.renderInventory(*window);
 	if (inventory.whichTabActive == 1) {
 		shopCards[0].renderCard(*window);
+		shopCards[1].renderCard(*window);
 	}
 }

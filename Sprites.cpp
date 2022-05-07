@@ -13,6 +13,12 @@ Sprites::Sprites() {
 	handToolTexture.loadFromFile("assets/textures/tools/hand.png");
 	handToolSprite.setTexture(handToolTexture);
 
+	//Crops and seeds
+	carrotSeedsTexture.loadFromFile("assets/textures/shopCards/carrotSeeds.png");
+	carrotSeedsSprite.setTexture(carrotSeedsTexture);
+	cucumberSeedsTexture.loadFromFile("assets/textures/shopCards/cucumberSeeds.png");
+	cucumberSeedsSprite.setTexture(cucumberSeedsTexture);
+
 	//Inventory
 	inventoryTexture.loadFromFile("assets/textures/inventory/inventoryBackground.png");
 	inventorySprite.setTexture(inventoryTexture);
@@ -49,6 +55,10 @@ sf::Sprite Sprites::soil0Sprite;
 //Tools
 sf::Sprite Sprites::shovelToolSprite;
 sf::Sprite Sprites::handToolSprite;
+
+//Crops and seeds
+sf::Sprite Sprites::carrotSeedsSprite;
+sf::Sprite Sprites::cucumberSeedsSprite;
 
 //Inventory
 sf::Sprite Sprites::inventorySprite;
