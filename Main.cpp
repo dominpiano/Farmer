@@ -12,7 +12,8 @@
 int main() {
 
     //Init game
-    Sprites spr;
+    Sprites spr = Sprites();
+    Resources res = Resources();
     Game game;
     game.initAll();
 

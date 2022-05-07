@@ -14,18 +14,19 @@
 class Inventory{
 private:
 	//Variables
-	int whichTabActive = 0;
 	sf::Sprite invActiveTabSprite;
 	sf::Sprite invDeactiveTabSprite;
 	sf::Sprite shopActiveTabSprite;
 	sf::Sprite shopDeactiveTabSprite;
-	
+
 public:
 	//Constructors & functions
 	sf::Sprite inventorySprite;
+	int whichTabActive = 0;
 	Inventory();
 	void updatePosition(sf::Vector2f center);
 	void checkTabChanged(sf::Vector2i mousePos);
+	sf::Vector2f getMainPosition();
 	void renderInventory(sf::RenderWindow& window);
 };
 

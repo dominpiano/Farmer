@@ -24,6 +24,7 @@ void Game::initAll() {
 	initVars();
 	initSpritesUI();
 	updateFarmSize();
+	setupInventory();
 	initWindow();
 }
 Game::~Game() {
@@ -131,6 +132,10 @@ void Game::updateTools() {
 		toolChooseSprite.setPosition(getRightDownCorner().x - 160, getRightDownCorner().y - 80);
 	}
 }
+void Game::setupInventory() {
+	shopCards.emplace_back(ShopCard(Sprites::shovelToolSprite, "Nothing"));
+	shopCards[0].setDescr(L"Nothing to say about this i guess well counts only if the text is long enough");
+}
 
 //Public
 
@@ -143,12 +148,17 @@ void Game::pollEvents() {
 			break;
 
 		case sf::Event::KeyPressed:
+			//Keys pressed
 			if (event.key.code == sf::Keyboard::Escape) {
 				window->close();
 			}
 			else if (event.key.code == sf::Keyboard::E) {
 				if (!isInventoryOpen) {
 					inventory.updatePosition(view.getCenter());
+					//Setting up position of shop cards
+					shopCards[0].setPosition(inventory.getMainPosition() + sf::Vector2f(40, 240));
+
+
 					isInventoryOpen = !isInventoryOpen;
 				}
 				else {
@@ -289,5 +299,7 @@ void Game::renderTools() {
 }
 void Game::renderInventory() {
 	inventory.renderInventory(*window);
-	//window->draw(inventory.inventorySprite);
+	if (inventory.whichTabActive == 1) {
+		shopCards[0].renderCard(*window);
+	}
 }

@@ -26,7 +26,7 @@ Sprites::Sprites() {
 	shopDeactiveTabSprite.setTexture(shopDeactiveTabTexture);
 
 	//Shop cards
-	cardBackgroundTexture.loadFromFile("assets/textures/shopCard/cardBackground.png");
+	cardBackgroundTexture.loadFromFile("assets/textures/shopCards/cardBackground.png");
 	cardBackgroundSprite.setTexture(cardBackgroundTexture);
 
 	//Hover things

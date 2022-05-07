@@ -10,7 +10,9 @@
 #include <SFML/Network.hpp>
 #include "Tile.h"
 #include "Sprites.h"
+#include "Resources.h"
 #include "Inventory.h"
+#include "ShopCard.h"
 
 class Game {
 private:
@@ -51,6 +53,7 @@ private:
 	//Vectors
 	std::vector<Tile> tiles;
 	std::vector<sf::Sprite> backGround;
+	std::vector<ShopCard> shopCards;
 
 	//Time
 	sf::Clock clock;
@@ -65,6 +68,7 @@ private:
 	void updateFarmSize();
 	void updateMousePosition();
 	void updateTools();
+	void setupInventory();
 
 	//For rendering
 	void renderTiles();

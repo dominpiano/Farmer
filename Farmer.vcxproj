@@ -163,6 +163,7 @@
     </ClCompile>
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Resources.cpp" />
     <ClCompile Include="ShopCard.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Tile.cpp" />
@@ -170,6 +171,7 @@
   <ItemGroup>
     <ClInclude Include="Game.h" />
     <ClInclude Include="Inventory.h" />
+    <ClInclude Include="Resources.h" />
     <ClInclude Include="ShopCard.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Tile.h" />
