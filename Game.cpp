@@ -36,8 +36,8 @@ Game::~Game() {
 
 void Game::initSpritesUI() {
 	//Tools
-	toolChooseSprite = Sprites::hoverSprite;
-	toolChooseSprite.setScale(0.8f, 0.8f);
+	toolPointerSprite = Sprites::hoverSprite;
+	toolPointerSprite.setScale(0.8f, 0.8f);
 	handToolSprite = Sprites::handToolSprite;
 	handToolSprite.setPosition(WIDTH - 80, HEIGHT - 80);
 	shovelToolSprite = Sprites::shovelToolSprite;
@@ -128,13 +128,13 @@ void Game::updateMousePosition() {
 void Game::updateTools() {
 	switch (toolChosen) {
 	case 0:
-		toolChooseSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 80);
+		toolPointerSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 80);
 		break;
 	case 1:
-		toolChooseSprite.setPosition(getRightDownCorner().x - 160, getRightDownCorner().y - 80);
+		toolPointerSprite.setPosition(getRightDownCorner().x - 160, getRightDownCorner().y - 80);
 		break;
 	case 2:
-		toolChooseSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
+		toolPointerSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
 		break;
 	}
 }
@@ -173,7 +173,7 @@ void Game::pollEvents() {
 						//Setting item and frames position
 						for (int i = 0; i < 8; i++) {
 							for (int j = 0; j < 3; j++) {
-								inventory.itemSlots[j * 3 + i].setItemPos(getLeftUpCorner().x + i * 120 + 300 + 6, getLeftUpCorner().y + j * 120 + 300 + 6);
+								inventory.itemSlots[j * 8 + i].setItemPos(inventory.getMainPosition().x + i * 120 + 100, inventory.getMainPosition().y + j * 120 + 250);
 							}
 						}
 					}
@@ -202,11 +202,14 @@ void Game::pollEvents() {
 					if (inventory.whichTabActive == 0) {
 						for (auto& i : inventory.itemSlots) {
 							if (i.getItem().getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
-								itemChosenSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
-								i.setItemPos(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
-								isItemChosen = true;
-								toolChosen = 2;
+								//Set position of chosen item
 								itemChosenSprite = i.getItem();
+								itemChosenSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
+								//Get quantity and set its position for rendering
+								itemChosenQuantity = i.getQuantityDisplay();
+								itemChosenQuantity.setPosition(getRightDownCorner().x - 80 + 60, getRightDownCorner().y - 160 + 60);
+								toolChosen = 2;
+								isItemChosen = true;
 								isInventoryOpen = false;
 							}
 						}
@@ -218,7 +221,19 @@ void Game::pollEvents() {
 						for (auto& i : shopCards) {
 							//Buy item if clicked
 							if (inventory.buyButtonSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y) && i.getSelected()) {
-								inventory.itemSlots.emplace_back(Item(i.getItem(), 10));
+								for (int j = 0; j < 24; j++) {
+									if (!inventory.itemSlots[j].slotHasItem) {
+										inventory.itemSlots[j].setItem(i.getItem());
+										inventory.itemSlots[j].setQuantity(10);
+										inventory.itemSlots[j].slotHasItem = true;
+										break;
+									}
+									else if (inventory.itemSlots[j].getItem().getTexture() == i.getItem().getTexture()) {
+										inventory.itemSlots[j].setQuantity(inventory.itemSlots[j].getQuantity() + 10);
+										itemChosenQuantity = inventory.itemSlots[j].getQuantityDisplay();
+										break;
+									}
+								}
 								inventory.whichTabActive = 0;
 							}
 							i.setSelected(false);
@@ -285,6 +300,7 @@ void Game::pollEvents() {
 			handToolSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 80);
 			shovelToolSprite.setPosition(getRightDownCorner().x - 160, getRightDownCorner().y - 80);
 			itemChosenSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
+			itemChosenQuantity.setPosition(getRightDownCorner().x - 80 + 60, getRightDownCorner().y - 160 + 60);
 			
 			//Setting view
 			window->setView(view);
@@ -356,9 +372,10 @@ void Game::renderTiles() {
 void Game::renderTools() {
 	window->draw(handToolSprite);
 	window->draw(shovelToolSprite);
-	window->draw(toolChooseSprite);
+	window->draw(toolPointerSprite);
 	if (isItemChosen) {
 		window->draw(itemChosenSprite);
+		window->draw(itemChosenQuantity);
 	}
 }
 

@@ -22,6 +22,8 @@ Item::Item() {
 
 void Item::setItem(sf::Sprite item) {
 	itemSprite = item;
+	//Set item position to be 10 pixels inside
+	itemSprite.setPosition(slotPos + sf::Vector2f(10, 10));
 }
 sf::Sprite Item::getItem() {
 	return itemSprite;
@@ -43,17 +45,25 @@ void Item::removeOne() {
 int Item::getQuantity() {
 	return quantity;
 }
+sf::Text Item::getQuantityDisplay() {
+	return qtyDisp;
+}
 void Item::setItemPos(sf::Vector2f pos) {
-	itemPos = pos;
-	itemSprite.setPosition(itemPos);
-	//qtyDisp.setPosition(itemPos.x + 70, itemPos.y + 70);
+	slotPos = pos;
+	itemSprite.setPosition(slotPos + sf::Vector2f(10, 10));
+	slotFrame.setPosition(slotPos);
+	qtyDisp.setPosition(slotPos.x + 80, slotPos.y + 80);
 }
 void Item::setItemPos(float x, float y) {
-	itemPos = sf::Vector2f(x, y);
-	itemSprite.setPosition(itemPos);
+	slotPos = sf::Vector2f(x, y);
+	itemSprite.setPosition(slotPos + sf::Vector2f(10, 10));
+	slotFrame.setPosition(slotPos);
+	qtyDisp.setPosition(slotPos.x + 80, slotPos.y + 80);
 }
 void Item::renderItem(sf::RenderWindow& window) {
 	window.draw(slotFrame);
-	window.draw(itemSprite);
+	if (slotHasItem) {
+		window.draw(itemSprite);
+	}
 	window.draw(qtyDisp);
 }

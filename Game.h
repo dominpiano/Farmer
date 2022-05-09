@@ -38,11 +38,12 @@ private:
 	//Tool things
 		//Tool utils
 	int toolChosen = 0; // 0-hand, 1-shovel, 2-seed
-	sf::Sprite toolChooseSprite;
+	sf::Sprite toolPointerSprite;
 		//Types of tool
 	sf::Sprite shovelToolSprite;
 	sf::Sprite handToolSprite;
 	sf::Sprite itemChosenSprite;
+	sf::Text itemChosenQuantity;
 	bool isItemChosen;
 
 	//Inventory
