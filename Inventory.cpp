@@ -11,6 +11,9 @@ Inventory::Inventory() {
 	shopActiveTabSprite = Sprites::shopActiveTabSprite;
 	shopDeactiveTabSprite = Sprites::shopDeactiveTabSprite;
 	buyButtonSprite = Sprites::buyButtonGraySprite;
+	for (int i = 0; i < 24; i++) {
+		itemSlots.emplace_back(Item());
+	}
 }
 
 void Inventory::activateBuyButton(bool toggle) {

@@ -10,6 +10,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
 #include "Sprites.h"
+#include "Item.h"
 
 class Inventory{
 private:
@@ -18,11 +19,15 @@ private:
 	sf::Sprite invDeactiveTabSprite;
 	sf::Sprite shopActiveTabSprite;
 	sf::Sprite shopDeactiveTabSprite;
+	
 
 public:
-	//Constructors & functions
+	//Variables
 	sf::Sprite inventorySprite;
 	sf::Sprite buyButtonSprite;
+	std::vector<Item> itemSlots;
+
+	//Constructors & functions
 	int whichTabActive = 0;
 	Inventory();
 	void activateBuyButton(bool toggle);

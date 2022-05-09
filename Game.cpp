@@ -15,6 +15,9 @@ sf::Vector2i operator+(sf::Vector2i v1, sf::Vector2i v2) {
 sf::Vector2f Game::getRightDownCorner() {
 	return sf::Vector2f(view.getCenter().x + WIDTH / 2, view.getCenter().y + HEIGHT / 2);
 }
+sf::Vector2f Game::getLeftUpCorner() {
+	return sf::Vector2f(view.getCenter().x - WIDTH / 2, view.getCenter().y - HEIGHT / 2);
+}
 
 //Constructors & Destructors
 Game::Game() {
@@ -165,6 +168,15 @@ void Game::pollEvents() {
 			else if (event.key.code == sf::Keyboard::E) {
 				if (!isInventoryOpen) {
 					inventory.updatePosition(view.getCenter());
+					//Only if inventory is in INVENTORY mode
+					if (inventory.whichTabActive == 0) {
+						//Setting item and frames position
+						for (int i = 0; i < 8; i++) {
+							for (int j = 0; j < 3; j++) {
+								inventory.itemSlots[j * 3 + i].setItemPos(getLeftUpCorner().x + i * 120 + 300 + 6, getLeftUpCorner().y + j * 120 + 300 + 6);
+							}
+						}
+					}
 
 					//Setting up position of shop cards
 					shopCards[0].setPosition(inventory.getMainPosition() + sf::Vector2f(40, 240));
@@ -185,13 +197,29 @@ void Game::pollEvents() {
 				//We don't want to move if inventory is opened
 				if (isInventoryOpen) {
 					inventory.checkTabChanged(relMousePos);
+
+					//Inventory
+					if (inventory.whichTabActive == 0) {
+						for (auto& i : inventory.itemSlots) {
+							if (i.getItem().getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
+								itemChosenSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
+								i.setItemPos(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
+								isItemChosen = true;
+								toolChosen = 2;
+								itemChosenSprite = i.getItem();
+								isInventoryOpen = false;
+							}
+						}
+					}
+
+					//Shop
 					if (inventory.whichTabActive == 1) {
 						inventory.activateBuyButton(false);
 						for (auto& i : shopCards) {
+							//Buy item if clicked
 							if (inventory.buyButtonSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y) && i.getSelected()) {
-								toolChosen = 2;
-								seedChosenSprite = i.getItem();
-								seedChosenSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
+								inventory.itemSlots.emplace_back(Item(i.getItem(), 10));
+								inventory.whichTabActive = 0;
 							}
 							i.setSelected(false);
 							if (i.cardBackgroundSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
@@ -205,16 +233,21 @@ void Game::pollEvents() {
 					//Tool check
 					if (handToolSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
 						toolChosen = 0;
+						isItemChosen = false;
 					}
 					if (shovelToolSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
 						toolChosen = 1;
+						isItemChosen = false;
 					}
 					moving = true;
 					oldPos = sf::Vector2f(mousePos);
 				}
 			}
-			else if (event.mouseButton.button == 1) {
+
+			// Unclick all items/tools
+			else if (event.mouseButton.button == 1) { 
 				toolChosen = 0;
+				isItemChosen = false;
 			}
 			break;
 
@@ -251,7 +284,7 @@ void Game::pollEvents() {
 			//Setting Tools Sprites Positions
 			handToolSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 80);
 			shovelToolSprite.setPosition(getRightDownCorner().x - 160, getRightDownCorner().y - 80);
-			seedChosenSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
+			itemChosenSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
 			
 			//Setting view
 			window->setView(view);
@@ -324,10 +357,22 @@ void Game::renderTools() {
 	window->draw(handToolSprite);
 	window->draw(shovelToolSprite);
 	window->draw(toolChooseSprite);
-	window->draw(seedChosenSprite);
+	if (isItemChosen) {
+		window->draw(itemChosenSprite);
+	}
 }
+
 void Game::renderInventory() {
 	inventory.renderInventory(*window);
+
+	//Inventory
+	if (inventory.whichTabActive == 0) {
+		for (auto& i : inventory.itemSlots) {
+			i.renderItem(*window);
+		}
+	}
+
+	//Shop
 	if (inventory.whichTabActive == 1) {
 		shopCards[0].renderCard(*window);
 		shopCards[1].renderCard(*window);

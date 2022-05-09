@@ -42,7 +42,8 @@ private:
 		//Types of tool
 	sf::Sprite shovelToolSprite;
 	sf::Sprite handToolSprite;
-	sf::Sprite seedChosenSprite;
+	sf::Sprite itemChosenSprite;
+	bool isItemChosen;
 
 	//Inventory
 	bool isInventoryOpen = false;
@@ -61,6 +62,7 @@ private:
 
 	//Helper functions
 	sf::Vector2f getRightDownCorner();
+	sf::Vector2f getLeftUpCorner();
 
 	//Functions
 	void initVars();
