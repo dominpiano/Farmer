@@ -13,6 +13,7 @@
 #include "Resources.h"
 #include "Inventory.h"
 #include "ShopCard.h"
+#include "PlantType.h"
 
 class Game {
 private:
@@ -60,6 +61,7 @@ private:
 
 	//Time
 	sf::Clock clock;
+	sf::Time lastTime, nextTime;
 
 	//Helper functions
 	sf::Vector2f getRightDownCorner();

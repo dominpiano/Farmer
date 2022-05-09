@@ -44,6 +44,36 @@ void Tile::setFence(sf::Sprite spr, int rotation = 0) {
 		break;
 	}
 }
+void Tile::setPlant(PlantType type, int stages, sf::Time plantTime, float timeReq) {
+	plantType = type;
+	stagesRequired = stages;
+	plantPlacedTime = plantTime;
+	timeRequired = timeReq;
+	hasPlant = true;
+}
+void Tile::updatePlant(sf::Time actTime) {
+	if (hasPlant) {
+		if (plantStage == 0) {
+			switch (plantType) {
+			case PlantType::CARROT:
+				plantSprite = Sprites::carrotSprites[0];
+				plantSprite.setPosition(pos);
+				break;
+			}
+		}
+		if (actTime.asSeconds() - plantPlacedTime.asSeconds() >= timeRequired / 5 && plantStage <= stagesRequired) {
+			//std::cout << "bruh" << std::endl;
+			plantPlacedTime = actTime;
+			switch (plantType) {
+			case PlantType::CARROT:
+				plantSprite = Sprites::carrotSprites[plantStage];
+				plantSprite.setPosition(pos);
+				break;
+			}
+			plantStage++;
+		}
+	}
+}
 void Tile::renderTile(sf::RenderWindow& window) {
 	window.draw(backgroundSprite);
 	if (hasFence) {
@@ -51,5 +81,8 @@ void Tile::renderTile(sf::RenderWindow& window) {
 	}
 	if (isHovered) {
 		window.draw(hoverSprite);
+	}
+	if (hasPlant) {
+		window.draw(plantSprite);
 	}
 }

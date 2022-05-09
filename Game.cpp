@@ -57,6 +57,7 @@ void Game::initVars() {
 			backGround.emplace_back(tmp);
 		}
 	}
+	lastTime = clock.getElapsedTime();
 }
 void Game::initWindow() {
 	window = new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), "Farmer", sf::Style::Titlebar | sf::Style::Fullscreen, sf::ContextSettings::ContextSettings(0, 0, 10, 2, 0));
@@ -194,7 +195,7 @@ void Game::pollEvents() {
 		case sf::Event::MouseButtonPressed:
 			if (event.mouseButton.button == 0) {
 
-				//We don't want to move if inventory is opened
+				//Inventory mouse events
 				if (isInventoryOpen) {
 					inventory.checkTabChanged(relMousePos);
 
@@ -244,6 +245,7 @@ void Game::pollEvents() {
 						}
 					}
 				}
+				//We don't want to move if inventory is opened
 				else {
 					//Tool check
 					if (handToolSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
@@ -269,10 +271,16 @@ void Game::pollEvents() {
 		case  sf::Event::MouseButtonReleased:
 			if (event.mouseButton.button == 0) {
 				switch (toolChosen) {
-				case 1:
+				case 1: //Shovel in hand
 					//Check if mouse is still over this particular Tile, then change the background
 					if (tiles[whichTileHovered].getBg().getGlobalBounds().contains(relMousePos.x, relMousePos.y) && newPos != oldPos) {
 						tiles[whichTileHovered].setBg(Sprites::soil0Sprite);
+					}
+					break;
+				case 2: //Seed in hand
+					if (tiles[whichTileHovered].getBg().getTexture() == Sprites::soil0Sprite.getTexture()) {
+						tiles[whichTileHovered].setPlant(PlantType::CARROT, 5, clock.getElapsedTime(), 50);
+						tiles[whichTileHovered].updatePlant(clock.getElapsedTime());
 					}
 					break;
 				}
@@ -329,11 +337,18 @@ void Game::pollEvents() {
 	}
 }
 
-
 void Game::frameUpdate() {
 	pollEvents();
 	updateMousePosition();
 	updateTools();
+	nextTime = clock.getElapsedTime();
+	if (nextTime.asMilliseconds() - lastTime.asMilliseconds() >= 1000) {
+		for (auto& i : tiles) {
+			i.updatePlant(clock.getElapsedTime());
+		}
+		lastTime = clock.getElapsedTime();
+	}
+	
 }
 
 void Game::render() {

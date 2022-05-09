@@ -10,6 +10,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
 #include "Sprites.h"
+#include "PlantType.h"
 
 class Tile {
 private:
@@ -17,6 +18,13 @@ private:
 	sf::Sprite hoverSprite;
 	sf::Sprite fenceSprite;
 	sf::Vector2f pos;
+	PlantType plantType;
+	sf::Sprite plantSprite;
+	sf::Time plantPlacedTime; //Working also as a "lap" time
+	float timeRequired; //Required time to fully grow a plant
+	int plantStage = 0;
+	int stagesRequired;
+	bool hasPlant = false;
 public:
 	//Constructors & Destructors
 	Tile();
@@ -30,6 +38,10 @@ public:
 	sf::Sprite getBg();
 	void setBg(sf::Sprite bgSpr);
 	void setFence(sf::Sprite spr, int rotation);
+
+	//For plants
+	void setPlant(PlantType type, int stages, sf::Time plantTime, float timeReq);
+	void updatePlant(sf::Time actTime);
 	void renderTile(sf::RenderWindow& window);
 };
 

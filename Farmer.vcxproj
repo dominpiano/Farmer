@@ -173,6 +173,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="PlantType.h" />
     <ClInclude Include="Resources.h" />
     <ClInclude Include="ShopCard.h" />
     <ClInclude Include="Sprites.h" />
