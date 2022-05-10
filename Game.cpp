@@ -175,6 +175,11 @@ void Game::pollEvents() {
 						for (int i = 0; i < 8; i++) {
 							for (int j = 0; j < 3; j++) {
 								inventory.itemSlots[j * 8 + i].setItemPos(inventory.getMainPosition().x + i * 120 + 100, inventory.getMainPosition().y + j * 120 + 250);
+								if (inventory.itemSlots[j * 8 + i].getQuantity() != itemChosenQuantityNumber) {
+									if (inventory.itemSlots[j * 8 + i].getItem().getTexture() == itemChosenSprite.getTexture()) {
+										inventory.itemSlots[j * 8 + i].setQuantity(itemChosenQuantityNumber);
+									}
+								}
 							}
 						}
 					}
@@ -207,6 +212,7 @@ void Game::pollEvents() {
 								itemChosenSprite = i.getItem();
 								itemChosenSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
 								//Get quantity and set its position for rendering
+								itemChosenQuantityNumber = i.getQuantity();
 								itemChosenQuantity = i.getQuantityDisplay();
 								itemChosenQuantity.setPosition(getRightDownCorner().x - 80 + 60, getRightDownCorner().y - 160 + 60);
 								toolChosen = 2;
@@ -232,6 +238,7 @@ void Game::pollEvents() {
 									else if (inventory.itemSlots[j].getItem().getTexture() == i.getItem().getTexture()) {
 										inventory.itemSlots[j].setQuantity(inventory.itemSlots[j].getQuantity() + 10);
 										itemChosenQuantity = inventory.itemSlots[j].getQuantityDisplay();
+										itemChosenQuantityNumber = inventory.itemSlots[j].getQuantity();
 										break;
 									}
 								}
@@ -279,7 +286,11 @@ void Game::pollEvents() {
 					break;
 				case 2: //Seed in hand
 					if (tiles[whichTileHovered].getBg().getTexture() == Sprites::soil0Sprite.getTexture()) {
-						tiles[whichTileHovered].setPlant(PlantType::CARROT, 5, clock.getElapsedTime(), 50);
+						if (itemChosenSprite.getTexture() == Sprites::carrotSeedsSprite.getTexture()) {
+							tiles[whichTileHovered].setPlant(PlantType::CARROT, 5, clock.getElapsedTime(), 50);
+						}
+						itemChosenQuantityNumber--;
+						itemChosenQuantity.setString(std::to_string(itemChosenQuantityNumber));
 						tiles[whichTileHovered].updatePlant(clock.getElapsedTime());
 					}
 					break;

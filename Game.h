@@ -45,6 +45,7 @@ private:
 	sf::Sprite handToolSprite;
 	sf::Sprite itemChosenSprite;
 	sf::Text itemChosenQuantity;
+	int itemChosenQuantityNumber;
 	bool isItemChosen;
 
 	//Inventory
