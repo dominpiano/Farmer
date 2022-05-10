@@ -20,16 +20,17 @@ Sprites::Sprites() {
 	cucumberSeedsSprite.setTexture(cucumberSeedsTexture);
 
 	//Plants
-	/*carrot_0Texture.loadFromFile("assets/textures/plants/carrot/carrot_0.png");
-	carrot_0Sprite.setTexture(carrot_0Texture);
-	carrot_1Texture.loadFromFile("assets/textures/plants/carrot/carrot_1.png");
-	carrot_1Sprite.setTexture(carrot_1Texture);*/
 	sf::Sprite temp;
-	carrotsTexture.loadFromFile("assets/textures/plants/carrot/carrots.png");
+	plantsTexture.loadFromFile("assets/textures/plants/plants.png");
 	for (int i = 0; i < 4; i++) {
-		temp.setTexture(carrotsTexture);
+		temp.setTexture(plantsTexture);
 		temp.setTextureRect(sf::IntRect(i * 100, 0, 100, 100));
 		carrotSprites.emplace_back(temp);
+	}
+	for (int i = 0; i < 4; i++) {
+		temp.setTexture(plantsTexture);
+		temp.setTextureRect(sf::IntRect(i * 100, 100, 100, 100));
+		cucumberSprites.emplace_back(temp);
 	}
 
 
@@ -51,7 +52,6 @@ Sprites::Sprites() {
 
 	//Shop cards
 	cardBackgroundTexture.loadFromFile("assets/textures/shopCards/cardBackground.png");
-	//cardBackgroundTexture.setSmooth(true);
 	cardBackgroundSprite.setTexture(cardBackgroundTexture);
 
 	//Hover things
@@ -80,13 +80,8 @@ sf::Sprite Sprites::carrotSeedsSprite;
 sf::Sprite Sprites::cucumberSeedsSprite;
 
 //Plants
-	//Carrot
 std::vector<sf::Sprite> Sprites::carrotSprites;
-//sf::Sprite Sprites::carrot_0Sprite;
-//sf::Sprite Sprites::carrot_1Sprite;
-//sf::Sprite Sprites::carrot_2Sprite;
-//sf::Sprite Sprites::carrot_3Sprite;
-//sf::Sprite Sprites::carrot_4Sprite;
+std::vector<sf::Sprite> Sprites::cucumberSprites;
 
 //Inventory
 sf::Sprite Sprites::inventorySprite;

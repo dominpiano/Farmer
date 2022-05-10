@@ -60,14 +60,23 @@ void Tile::updatePlant(sf::Time actTime) {
 				plantSprite.setPosition(pos);
 				plantStage++;
 				break;
+			case PlantType::CUCUMBER:
+				plantSprite = Sprites::cucumberSprites[0];
+				plantSprite.setPosition(pos);
+				plantStage++;
+				break;
 			}
 		}
-		if (actTime.asSeconds() - plantPlacedTime.asSeconds() >= timeRequired / 5 && plantStage < stagesRequired) {
+		if (actTime.asSeconds() - plantPlacedTime.asSeconds() >= timeRequired / stagesRequired && plantStage < stagesRequired) {
 			//std::cout << "bruh" << std::endl;
 			plantPlacedTime = actTime;
 			switch (plantType) {
 			case PlantType::CARROT:
 				plantSprite = Sprites::carrotSprites[plantStage];
+				plantSprite.setPosition(pos);
+				break;
+			case PlantType::CUCUMBER:
+				plantSprite = Sprites::cucumberSprites[plantStage];
 				plantSprite.setPosition(pos);
 				break;
 			}
@@ -80,10 +89,11 @@ void Tile::renderTile(sf::RenderWindow& window) {
 	if (hasFence) {
 		window.draw(fenceSprite);
 	}
-	if (isHovered) {
-		window.draw(hoverSprite);
-	}
 	if (hasPlant) {
 		window.draw(plantSprite);
+	}
+	//Hover always on top
+	if (isHovered) {
+		window.draw(hoverSprite);
 	}
 }

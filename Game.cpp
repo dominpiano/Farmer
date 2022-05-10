@@ -290,7 +290,9 @@ void Game::pollEvents() {
 				case 2: //Seed in hand
 					if (tiles[whichTileHovered].getBg().getTexture() == Sprites::soil0Sprite.getTexture() && !tiles[whichTileHovered].hasPlant) {
 						if (itemChosenSprite.getTexture() == Sprites::carrotSeedsSprite.getTexture()) {
-							tiles[whichTileHovered].setPlant(PlantType::CARROT, 4, clock.getElapsedTime(), 50);
+							tiles[whichTileHovered].setPlant(PlantType::CARROT, 4, clock.getElapsedTime(), 40);
+						}else if (itemChosenSprite.getTexture() == Sprites::cucumberSeedsSprite.getTexture()) {
+							tiles[whichTileHovered].setPlant(PlantType::CUCUMBER, 4, clock.getElapsedTime(), 60);
 						}
 						itemChosenQuantityNumber--;
 						itemChosenQuantity.setString(std::to_string(itemChosenQuantityNumber));
@@ -334,24 +336,6 @@ void Game::pollEvents() {
 			//Recalculating position
 			oldPos = newPos;
 			break;
-
-			//Uncomment it when you are ready for this!!!
-			 
-			//case sf::Event::MouseWheelScrolled:
-			//	if (moving) {
-			//		break;
-			//	}
-
-			//	if (event.mouseWheelScroll.delta <= -1)
-			//		zoom = std::min(2.f, zoom + .2f);
-			//	else if (event.mouseWheelScroll.delta >= 1)
-			//		zoom = std::max(1.f, zoom - .2f);
-
-			//	//Update 
-			//	view.setSize(window->getDefaultView().getSize());
-			//	view.zoom(zoom);
-			//	window->setView(view);
-			//	break;
 		}
 	}
 }
