@@ -2,7 +2,7 @@
 
 Sprites::Sprites() {
 	//Backgrounds
-	grassTexture.loadFromFile("assets/textures/background/grass_stare.png");
+	grassTexture.loadFromFile("assets/textures/background/grass.png");
 	grassSprite.setTexture(grassTexture);
 	soil0Texture.loadFromFile("assets/textures/background/soil0.png");
 	soil0Sprite.setTexture(soil0Texture);
@@ -26,7 +26,7 @@ Sprites::Sprites() {
 	carrot_1Sprite.setTexture(carrot_1Texture);*/
 	sf::Sprite temp;
 	carrotsTexture.loadFromFile("assets/textures/plants/carrot/carrots.png");
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 4; i++) {
 		temp.setTexture(carrotsTexture);
 		temp.setTextureRect(sf::IntRect(i * 100, 0, 100, 100));
 		carrotSprites.emplace_back(temp);

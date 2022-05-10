@@ -30,7 +30,13 @@ sf::Sprite Item::getItem() {
 }
 void Item::setQuantity(int qty_) {
 	quantity = qty_;
-	qtyDisp.setString(std::to_string(quantity));
+	if (quantity == 0) {
+		slotHasItem = false;
+		qtyDisp.setString("");
+	}
+	else {
+		qtyDisp.setString(std::to_string(quantity));
+	}
 }
 void Item::addOne() {
 	quantity++;
@@ -39,8 +45,12 @@ void Item::addOne() {
 void Item::removeOne() {
 	if (quantity > 0) {
 		quantity--;
+		qtyDisp.setString(std::to_string(quantity));
 	}
-	qtyDisp.setString(std::to_string(quantity));
+	else {
+		slotHasItem = false;
+		qtyDisp.setString("");
+	}
 }
 int Item::getQuantity() {
 	return quantity;

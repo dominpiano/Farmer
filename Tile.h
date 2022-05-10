@@ -24,7 +24,6 @@ private:
 	float timeRequired; //Required time to fully grow a plant
 	int plantStage = 0;
 	int stagesRequired;
-	bool hasPlant = false;
 public:
 	//Constructors & Destructors
 	Tile();
@@ -33,6 +32,7 @@ public:
 	//Variables
 	bool isHovered;
 	bool hasFence = false;
+	bool hasPlant = false;
 
 	//Functions
 	sf::Sprite getBg();

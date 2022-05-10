@@ -58,11 +58,12 @@ void Tile::updatePlant(sf::Time actTime) {
 			case PlantType::CARROT:
 				plantSprite = Sprites::carrotSprites[0];
 				plantSprite.setPosition(pos);
+				plantStage++;
 				break;
 			}
 		}
 		if (actTime.asSeconds() - plantPlacedTime.asSeconds() >= timeRequired / 5 && plantStage < stagesRequired) {
-			std::cout << "bruh" << std::endl;
+			//std::cout << "bruh" << std::endl;
 			plantPlacedTime = actTime;
 			switch (plantType) {
 			case PlantType::CARROT:

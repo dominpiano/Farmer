@@ -177,6 +177,9 @@ void Game::pollEvents() {
 								inventory.itemSlots[j * 8 + i].setItemPos(inventory.getMainPosition().x + i * 120 + 100, inventory.getMainPosition().y + j * 120 + 250);
 								if (inventory.itemSlots[j * 8 + i].getQuantity() != itemChosenQuantityNumber) {
 									if (inventory.itemSlots[j * 8 + i].getItem().getTexture() == itemChosenSprite.getTexture()) {
+										if (itemChosenQuantityNumber == 0) {
+											inventory.itemSlots[j * 8 + i].slotHasItem = false;
+										}
 										inventory.itemSlots[j * 8 + i].setQuantity(itemChosenQuantityNumber);
 									}
 								}
@@ -285,13 +288,18 @@ void Game::pollEvents() {
 					}
 					break;
 				case 2: //Seed in hand
-					if (tiles[whichTileHovered].getBg().getTexture() == Sprites::soil0Sprite.getTexture()) {
+					if (tiles[whichTileHovered].getBg().getTexture() == Sprites::soil0Sprite.getTexture() && !tiles[whichTileHovered].hasPlant) {
 						if (itemChosenSprite.getTexture() == Sprites::carrotSeedsSprite.getTexture()) {
-							tiles[whichTileHovered].setPlant(PlantType::CARROT, 5, clock.getElapsedTime(), 50);
+							tiles[whichTileHovered].setPlant(PlantType::CARROT, 4, clock.getElapsedTime(), 50);
 						}
 						itemChosenQuantityNumber--;
 						itemChosenQuantity.setString(std::to_string(itemChosenQuantityNumber));
 						tiles[whichTileHovered].updatePlant(clock.getElapsedTime());
+					}
+					if (itemChosenQuantityNumber == 0) {
+						toolChosen = 0;
+						isItemChosen = false;
+						itemChosenQuantity.setString("");
 					}
 					break;
 				}
