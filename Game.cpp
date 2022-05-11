@@ -174,7 +174,7 @@ void Game::pollEvents() {
 						//Setting item and frames position
 						for (int i = 0; i < 8; i++) {
 							for (int j = 0; j < 3; j++) {
-								inventory.itemSlots[j * 8 + i].setItemPos(inventory.getMainPosition().x + i * 120 + 100, inventory.getMainPosition().y + j * 120 + 250);
+								inventory.itemSlots[j * 8 + i].setItemPos(inventory.getMainPosition().x + i * 120 + 150, inventory.getMainPosition().y + j * 120 + 250);
 								if (inventory.itemSlots[j * 8 + i].getQuantity() != itemChosenQuantityNumber) {
 									if (inventory.itemSlots[j * 8 + i].getItem().getTexture() == itemChosenSprite.getTexture()) {
 										if (itemChosenQuantityNumber == 0) {
@@ -188,8 +188,8 @@ void Game::pollEvents() {
 					}
 
 					//Setting up position of shop cards
-					shopCards[0].setPosition(inventory.getMainPosition() + sf::Vector2f(40, 240));
-					shopCards[1].setPosition(inventory.getMainPosition() + sf::Vector2f(260, 240));
+					shopCards[0].setPosition(inventory.getMainPosition() + sf::Vector2f(150, 250));
+					shopCards[1].setPosition(inventory.getMainPosition() + sf::Vector2f(370, 250));
 
 
 					isInventoryOpen = !isInventoryOpen;
@@ -266,15 +266,14 @@ void Game::pollEvents() {
 						toolChosen = 1;
 						isItemChosen = false;
 					}
-					moving = true;
-					oldPos = sf::Vector2f(mousePos);
+					
 				}
 			}
 
 			// Unclick all items/tools
 			else if (event.mouseButton.button == 1) { 
-				toolChosen = 0;
-				isItemChosen = false;
+				moving = true;
+				oldPos = sf::Vector2f(mousePos);
 			}
 			break;
 
@@ -282,8 +281,9 @@ void Game::pollEvents() {
 			if (event.mouseButton.button == 0) {
 				switch (toolChosen) {
 				case 1: //Shovel in hand
+					//cout << "bruh" << endl;
 					//Check if mouse is still over this particular Tile, then change the background
-					if (tiles[whichTileHovered].getBg().getGlobalBounds().contains(relMousePos.x, relMousePos.y) && newPos != oldPos) {
+					if (tiles[whichTileHovered].getBg().getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
 						tiles[whichTileHovered].setBg(Sprites::soil0Sprite);
 					}
 					break;
@@ -305,6 +305,8 @@ void Game::pollEvents() {
 					}
 					break;
 				}
+			}
+			if (event.mouseButton.button == 1) {
 				moving = false;
 			}
 			break;
