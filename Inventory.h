@@ -19,17 +19,20 @@ private:
 	sf::Sprite invDeactiveTabSprite;
 	sf::Sprite shopActiveTabSprite;
 	sf::Sprite shopDeactiveTabSprite;
-	
+	sf::Vector2f mainPos;
+
 
 public:
 	//Variables
 	sf::Sprite inventorySprite;
+	sf::Sprite shopSprite;
 	sf::Sprite buyButtonSprite;
 	std::vector<Item> itemSlots;
 
 	//Constructors & functions
 	int whichTabActive = 0;
 	Inventory();
+	void addItem(Item it);
 	void activateBuyButton(bool toggle);
 	void updatePosition(sf::Vector2f center);
 	void checkTabChanged(sf::Vector2i mousePos);

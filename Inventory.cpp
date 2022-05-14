@@ -5,7 +5,8 @@ sf::Vector2f Inventory::getMainPosition() {
 }
 
 Inventory::Inventory() {
-	inventorySprite = Sprites::inventorySprite;
+	inventorySprite = Sprites::inventoryBackgroundSprite;
+	shopSprite = Sprites::shopBackgroundSprite;
 	invActiveTabSprite = Sprites::invActiveTabSprite;
 	invDeactiveTabSprite = Sprites::invDeactiveTabSprite;
 	shopActiveTabSprite = Sprites::shopActiveTabSprite;
@@ -13,6 +14,23 @@ Inventory::Inventory() {
 	buyButtonSprite = Sprites::buyButtonGraySprite;
 	for (int i = 0; i < 24; i++) {
 		itemSlots.emplace_back(Item());
+	}
+}
+
+void Inventory::addItem(Item it) {
+	for (auto& i : itemSlots) {
+		if (i.getItem().getTexture() == it.getItem().getTexture() && it.getItem().getTexture() == Sprites::carrotSprites[0].getTexture()) {
+			if (i.getItem().getTextureRect().top == it.getItem().getTextureRect().top) {
+				i.setQuantity(i.getQuantity() + 1);
+			}
+			break;
+		}
+		else if (!i.slotHasItem) {
+			i.setItem(it.getItem());
+			i.setQuantity(it.getQuantity());
+			i.slotHasItem = true;
+			break;
+		}
 	}
 }
 
@@ -30,11 +48,18 @@ void Inventory::activateBuyButton(bool toggle) {
 
 void Inventory::updatePosition(sf::Vector2f center) {
 	inventorySprite.setPosition(center.x - 1500 / 2, center.y - 900 / 2);
+	shopSprite.setPosition(center.x - 1500 / 2, center.y - 900 / 2);
 	invActiveTabSprite.setPosition(getMainPosition().x + 99, getMainPosition().y);
-	invDeactiveTabSprite.setPosition(getMainPosition().x + 99, getMainPosition().y - 1);
+	invDeactiveTabSprite.setPosition(getMainPosition().x + 99, getMainPosition().y);
 	shopActiveTabSprite.setPosition(getMainPosition().x + 99 + invActiveTabSprite.getTexture()->getSize().x, getMainPosition().y);
 	shopDeactiveTabSprite.setPosition(getMainPosition().x + 99 + invActiveTabSprite.getTexture()->getSize().x, getMainPosition().y);
-	buyButtonSprite.setPosition(getMainPosition().x + 1500 - 150 - 30, getMainPosition().y + 900 - 50 - 30);
+	buyButtonSprite.setPosition(getMainPosition().x + 1330 - 150, getMainPosition().y + 750 - 50);
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 3; j++) {
+			//Only for locating a set of slots
+			itemSlots[j * 8 + i].setItemPos(getMainPosition().x + i * 113 + 305, getMainPosition().y + j * 113 + 379);
+		}
+	}
 }
 
 void Inventory::checkTabChanged(sf::Vector2i mousePos) {
@@ -47,7 +72,12 @@ void Inventory::checkTabChanged(sf::Vector2i mousePos) {
 }
 
 void Inventory::renderInventory(sf::RenderWindow& window) {
-	window.draw(inventorySprite);
+	if (whichTabActive == 0) {
+		window.draw(inventorySprite);
+	}
+	else if (whichTabActive == 1) {
+		window.draw(shopSprite);
+	}
 	switch (whichTabActive) {
 	case 0:
 		window.draw(invActiveTabSprite);

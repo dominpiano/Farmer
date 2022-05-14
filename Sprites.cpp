@@ -12,6 +12,8 @@ Sprites::Sprites() {
 	shovelToolSprite.setTexture(shovelToolTexture);
 	handToolTexture.loadFromFile("assets/textures/tools/hand.png");
 	handToolSprite.setTexture(handToolTexture);
+	sickleToolTexture.loadFromFile("assets/textures/tools/sickle.png");
+	sickleToolSprite.setTexture(sickleToolTexture);
 
 	//Seeds
 	carrotSeedsTexture.loadFromFile("assets/textures/shopCards/carrotSeeds.png");
@@ -22,12 +24,13 @@ Sprites::Sprites() {
 	//Plants
 	sf::Sprite temp;
 	plantsTexture.loadFromFile("assets/textures/plants/plants.png");
+	//cucumbersTexture.loadFromFile("assets/textures/plants/cucumbers.png");
 	for (int i = 0; i < 4; i++) {
 		temp.setTexture(plantsTexture);
 		temp.setTextureRect(sf::IntRect(i * 100, 0, 100, 100));
 		carrotSprites.emplace_back(temp);
 	}
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 5; i++) {
 		temp.setTexture(plantsTexture);
 		temp.setTextureRect(sf::IntRect(i * 100, 100, 100, 100));
 		cucumberSprites.emplace_back(temp);
@@ -35,8 +38,10 @@ Sprites::Sprites() {
 
 
 	//Inventory
-	inventoryTexture.loadFromFile("assets/textures/inventory/inventoryBackground.png");
-	inventorySprite.setTexture(inventoryTexture);
+	inventoryBackgroundTexture.loadFromFile("assets/textures/inventory/inventoryBackground.png");
+	inventoryBackgroundSprite.setTexture(inventoryBackgroundTexture);
+	shopBackgroundTexture.loadFromFile("assets/textures/inventory/shopBackground.png");
+	shopBackgroundSprite.setTexture(shopBackgroundTexture);
 	invActiveTabTexture.loadFromFile("assets/textures/inventory/invActiveTab.png");
 	invActiveTabSprite.setTexture(invActiveTabTexture);
 	invDeactiveTabTexture.loadFromFile("assets/textures/inventory/invDeactiveTab.png");
@@ -74,6 +79,7 @@ sf::Sprite Sprites::soil0Sprite;
 //Tools
 sf::Sprite Sprites::shovelToolSprite;
 sf::Sprite Sprites::handToolSprite;
+sf::Sprite Sprites::sickleToolSprite;
 
 //Seeds
 sf::Sprite Sprites::carrotSeedsSprite;
@@ -84,7 +90,8 @@ std::vector<sf::Sprite> Sprites::carrotSprites;
 std::vector<sf::Sprite> Sprites::cucumberSprites;
 
 //Inventory
-sf::Sprite Sprites::inventorySprite;
+sf::Sprite Sprites::inventoryBackgroundSprite;
+sf::Sprite Sprites::shopBackgroundSprite;
 sf::Sprite Sprites::invActiveTabSprite;
 sf::Sprite Sprites::invDeactiveTabSprite;
 sf::Sprite Sprites::shopActiveTabSprite;

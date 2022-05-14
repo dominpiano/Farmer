@@ -51,6 +51,18 @@ void Tile::setPlant(PlantType type, int stages, sf::Time plantTime, float timeRe
 	timeRequired = timeReq;
 	hasPlant = true;
 }
+PlantType Tile::getPlant() {
+	return plantType;
+}
+bool Tile::isRipe() {
+	return plantStage == stagesRequired;
+}
+void Tile::reset() {
+	hasPlant = false;
+	plantStage = 0;
+	stagesRequired = 0;
+	timeRequired = 0;
+}
 void Tile::updatePlant(sf::Time actTime) {
 	if (hasPlant) {
 		if (plantStage == 0) {

@@ -41,6 +41,9 @@ public:
 
 	//For plants
 	void setPlant(PlantType type, int stages, sf::Time plantTime, float timeReq);
+	PlantType getPlant();
+	bool isRipe();
+	void reset();
 	void updatePlant(sf::Time actTime);
 	void renderTile(sf::RenderWindow& window);
 };

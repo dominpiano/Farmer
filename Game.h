@@ -38,11 +38,12 @@ private:
 
 	//Tool things
 		//Tool utils
-	int toolChosen = 0; // 0-hand, 1-shovel, 2-seed
+	int toolChosen = 0; // 0-hand, 1-shovel, 2-seed, 3-sickle
 	sf::Sprite toolPointerSprite;
 		//Types of tool
 	sf::Sprite shovelToolSprite;
 	sf::Sprite handToolSprite;
+	sf::Sprite sickleToolSprite;
 	sf::Sprite itemChosenSprite;
 	sf::Text itemChosenQuantity;
 	int itemChosenQuantityNumber;
@@ -62,7 +63,9 @@ private:
 
 	//Time
 	sf::Clock clock;
+	sf::Clock clockDelta; //For deltaTime
 	sf::Time lastTime, nextTime;
+	float deltaTime;
 
 	//Helper functions
 	sf::Vector2f getRightDownCorner();

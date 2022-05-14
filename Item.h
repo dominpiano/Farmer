@@ -16,13 +16,12 @@
 class Item{
 private:
 	sf::Sprite itemSprite;
-	sf::RectangleShape slotFrame = sf::RectangleShape(sf::Vector2f(100, 100));
 	int quantity = 0;
-	sf::Vector2f slotPos;
 	sf::Text qtyDisp;
 public:
 	//Variables
 	bool slotHasItem = false;
+	sf::Vector2f slotPos;
 
 	//Constructors
 	Item(sf::Sprite item, int qty);
@@ -36,7 +35,7 @@ public:
 	void removeOne();
 	int getQuantity();
 	sf::Text getQuantityDisplay();
-	void setItemPos(sf::Vector2f pos);
+	//void setItemPos(sf::Vector2f pos);
 	void setItemPos(float x, float y);
 	void renderItem(sf::RenderWindow& window);
 };

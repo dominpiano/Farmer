@@ -13,6 +13,7 @@ private:
 	//Tools
 	sf::Texture shovelToolTexture;
 	sf::Texture handToolTexture;
+	sf::Texture sickleToolTexture;
 
 	//Seeds
 	sf::Texture carrotSeedsTexture;
@@ -20,9 +21,11 @@ private:
 
 	//Plants
 	sf::Texture plantsTexture;
+	//sf::Texture cucumbersTexture;
 
 	//Inventory
-	sf::Texture inventoryTexture;
+	sf::Texture inventoryBackgroundTexture;
+	sf::Texture shopBackgroundTexture;
 	sf::Texture invActiveTabTexture;
 	sf::Texture invDeactiveTabTexture;
 	sf::Texture shopActiveTabTexture;
@@ -47,6 +50,7 @@ public:
 	//Tools
 	static sf::Sprite shovelToolSprite;
 	static sf::Sprite handToolSprite;
+	static sf::Sprite sickleToolSprite;
 
 	//Seeds
 	static sf::Sprite carrotSeedsSprite;
@@ -57,7 +61,8 @@ public:
 	static std::vector<sf::Sprite> cucumberSprites;
 
 	//Inventory
-	static sf::Sprite inventorySprite;
+	static sf::Sprite inventoryBackgroundSprite;
+	static sf::Sprite shopBackgroundSprite;
 	static sf::Sprite invActiveTabSprite;
 	static sf::Sprite invDeactiveTabSprite;
 	static sf::Sprite shopActiveTabSprite;

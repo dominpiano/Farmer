@@ -42,6 +42,8 @@ void Game::initSpritesUI() {
 	handToolSprite.setPosition(WIDTH - 80, HEIGHT - 80);
 	shovelToolSprite = Sprites::shovelToolSprite;
 	shovelToolSprite.setPosition(WIDTH - 160, HEIGHT - 80);
+	sickleToolSprite = Sprites::sickleToolSprite;
+	sickleToolSprite.setPosition(WIDTH - 240, HEIGHT - 80);
 }
 void Game::initVars() {
 	window = nullptr;
@@ -137,6 +139,9 @@ void Game::updateTools() {
 	case 2:
 		toolPointerSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
 		break;
+	case 3:
+		toolPointerSprite.setPosition(getRightDownCorner().x - 240, getRightDownCorner().y - 80);
+		break;
 	}
 }
 void Game::setupInventory() {
@@ -171,10 +176,9 @@ void Game::pollEvents() {
 					inventory.updatePosition(view.getCenter());
 					//Only if inventory is in INVENTORY mode
 					if (inventory.whichTabActive == 0) {
-						//Setting item and frames position
+						//Updating quantities of items
 						for (int i = 0; i < 8; i++) {
 							for (int j = 0; j < 3; j++) {
-								inventory.itemSlots[j * 8 + i].setItemPos(inventory.getMainPosition().x + i * 120 + 150, inventory.getMainPosition().y + j * 120 + 250);
 								if (inventory.itemSlots[j * 8 + i].getQuantity() != itemChosenQuantityNumber) {
 									if (inventory.itemSlots[j * 8 + i].getItem().getTexture() == itemChosenSprite.getTexture()) {
 										if (itemChosenQuantityNumber == 0) {
@@ -197,6 +201,9 @@ void Game::pollEvents() {
 				else {
 					isInventoryOpen = !isInventoryOpen;
 				}
+			}
+			else if (event.key.code == sf::Keyboard::C) {
+				inventory.addItem(Item(Sprites::carrotSeedsSprite, 10));
 			}
 			break;
 
@@ -233,9 +240,7 @@ void Game::pollEvents() {
 							if (inventory.buyButtonSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y) && i.getSelected()) {
 								for (int j = 0; j < 24; j++) {
 									if (!inventory.itemSlots[j].slotHasItem) {
-										inventory.itemSlots[j].setItem(i.getItem());
-										inventory.itemSlots[j].setQuantity(10);
-										inventory.itemSlots[j].slotHasItem = true;
+										inventory.addItem(Item(i.getItem(), 10));
 										break;
 									}
 									else if (inventory.itemSlots[j].getItem().getTexture() == i.getItem().getTexture()) {
@@ -266,7 +271,10 @@ void Game::pollEvents() {
 						toolChosen = 1;
 						isItemChosen = false;
 					}
-					
+					if (sickleToolSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
+						toolChosen = 3;
+						isItemChosen = false;
+					}
 				}
 			}
 
@@ -290,9 +298,9 @@ void Game::pollEvents() {
 				case 2: //Seed in hand
 					if (tiles[whichTileHovered].getBg().getTexture() == Sprites::soil0Sprite.getTexture() && !tiles[whichTileHovered].hasPlant) {
 						if (itemChosenSprite.getTexture() == Sprites::carrotSeedsSprite.getTexture()) {
-							tiles[whichTileHovered].setPlant(PlantType::CARROT, 4, clock.getElapsedTime(), 40);
+							tiles[whichTileHovered].setPlant(PlantType::CARROT, 4, clock.getElapsedTime(), 4);
 						}else if (itemChosenSprite.getTexture() == Sprites::cucumberSeedsSprite.getTexture()) {
-							tiles[whichTileHovered].setPlant(PlantType::CUCUMBER, 4, clock.getElapsedTime(), 60);
+							tiles[whichTileHovered].setPlant(PlantType::CUCUMBER, 4, clock.getElapsedTime(), 4);
 						}
 						itemChosenQuantityNumber--;
 						itemChosenQuantity.setString(std::to_string(itemChosenQuantityNumber));
@@ -304,7 +312,22 @@ void Game::pollEvents() {
 						itemChosenQuantity.setString("");
 					}
 					break;
+				case 3:
+					if (tiles[whichTileHovered].getBg().getGlobalBounds().contains(relMousePos.x, relMousePos.y) && tiles[whichTileHovered].hasPlant && tiles[whichTileHovered].isRipe()) {
+						
+						// TODO: ANIMATION OF SICKLE CUTTING 
+						switch (tiles[whichTileHovered].getPlant()) {
+						case PlantType::CARROT:
+							inventory.addItem(Item(Sprites::carrotSprites[4], 1));
+							break;
+						case PlantType::CUCUMBER:
+							inventory.addItem(Item(Sprites::cucumberSprites[4], 1));
+							break;
+						}
+						tiles[whichTileHovered].reset();
+					}
 				}
+
 			}
 			if (event.mouseButton.button == 1) {
 				moving = false;
@@ -330,6 +353,7 @@ void Game::pollEvents() {
 			//Setting Tools Sprites Positions
 			handToolSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 80);
 			shovelToolSprite.setPosition(getRightDownCorner().x - 160, getRightDownCorner().y - 80);
+			sickleToolSprite.setPosition(getRightDownCorner().x - 240, getRightDownCorner().y - 80);
 			itemChosenSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
 			itemChosenQuantity.setPosition(getRightDownCorner().x - 80 + 60, getRightDownCorner().y - 160 + 60);
 			
@@ -346,6 +370,7 @@ void Game::frameUpdate() {
 	pollEvents();
 	updateMousePosition();
 	updateTools();
+	deltaTime = clockDelta.restart().asSeconds();
 	nextTime = clock.getElapsedTime();
 	if (nextTime.asMilliseconds() - lastTime.asMilliseconds() >= 1000) {
 		for (auto& i : tiles) {
@@ -392,6 +417,7 @@ void Game::renderTiles() {
 void Game::renderTools() {
 	window->draw(handToolSprite);
 	window->draw(shovelToolSprite);
+	window->draw(sickleToolSprite);
 	window->draw(toolPointerSprite);
 	if (isItemChosen) {
 		window->draw(itemChosenSprite);
