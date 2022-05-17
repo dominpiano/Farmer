@@ -57,6 +57,7 @@ public:
 	static sf::Sprite cucumberSeedsSprite;
 
 	//Plants
+	static sf::Sprite plantSprite;
 	static std::vector<sf::Sprite> carrotSprites;
 	static std::vector<sf::Sprite> cucumberSprites;
 

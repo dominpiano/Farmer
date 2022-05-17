@@ -202,13 +202,53 @@ void Game::pollEvents() {
 					isInventoryOpen = !isInventoryOpen;
 				}
 			}
-			else if (event.key.code == sf::Keyboard::C) {
-				inventory.addItem(Item(Sprites::carrotSeedsSprite, 10));
-			}
 			break;
 
 		case sf::Event::MouseButtonPressed:
 			if (event.mouseButton.button == 0) {
+				//Garden stuff, farming ect
+				switch (toolChosen) {
+				case 1: //Shovel in hand
+					//cout << "bruh" << endl;
+					//Check if mouse is still over this particular Tile, then change the background
+					if (tiles[whichTileHovered].getBg().getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
+						tiles[whichTileHovered].setBg(Sprites::soil0Sprite);
+					}
+					break;
+				case 2: //Seed in hand
+					if (tiles[whichTileHovered].getBg().getGlobalBounds().contains(relMousePos.x, relMousePos.y) && 
+						tiles[whichTileHovered].getBg().getTexture() == Sprites::soil0Sprite.getTexture() && !tiles[whichTileHovered].hasPlant) {
+						if (itemChosenSprite.getTexture() == Sprites::carrotSeedsSprite.getTexture()) {
+							tiles[whichTileHovered].setPlant(PlantType::CARROT, 4, clock.getElapsedTime(), 4);
+						}
+						else if (itemChosenSprite.getTexture() == Sprites::cucumberSeedsSprite.getTexture()) {
+							tiles[whichTileHovered].setPlant(PlantType::CUCUMBER, 4, clock.getElapsedTime(), 4);
+						}
+						itemChosenQuantityNumber--;
+						itemChosenQuantity.setString(std::to_string(itemChosenQuantityNumber));
+						tiles[whichTileHovered].updatePlant(clock.getElapsedTime());
+					}
+					if (itemChosenQuantityNumber == 0) {
+						toolChosen = 0;
+						isItemChosen = false;
+						itemChosenQuantity.setString("");
+					}
+					break;
+				case 3:
+					if (tiles[whichTileHovered].getBg().getGlobalBounds().contains(relMousePos.x, relMousePos.y) && tiles[whichTileHovered].hasPlant && tiles[whichTileHovered].isRipe()) {
+
+						// TODO: ANIMATION OF SICKLE CUTTING 
+						switch (tiles[whichTileHovered].getPlant()) {
+						case PlantType::CARROT:
+							inventory.addItem(Item(Sprites::carrotSprites[4], 1));
+							break;
+						case PlantType::CUCUMBER:
+							inventory.addItem(Item(Sprites::cucumberSprites[4], 1));
+							break;
+						}
+						tiles[whichTileHovered].reset();
+					}
+				}
 
 				//Inventory mouse events
 				if (isInventoryOpen) {
@@ -276,9 +316,10 @@ void Game::pollEvents() {
 						isItemChosen = false;
 					}
 				}
+				
 			}
 
-			// Unclick all items/tools
+			// Move for right button
 			else if (event.mouseButton.button == 1) { 
 				moving = true;
 				oldPos = sf::Vector2f(mousePos);
@@ -286,49 +327,6 @@ void Game::pollEvents() {
 			break;
 
 		case  sf::Event::MouseButtonReleased:
-			if (event.mouseButton.button == 0) {
-				switch (toolChosen) {
-				case 1: //Shovel in hand
-					//cout << "bruh" << endl;
-					//Check if mouse is still over this particular Tile, then change the background
-					if (tiles[whichTileHovered].getBg().getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
-						tiles[whichTileHovered].setBg(Sprites::soil0Sprite);
-					}
-					break;
-				case 2: //Seed in hand
-					if (tiles[whichTileHovered].getBg().getTexture() == Sprites::soil0Sprite.getTexture() && !tiles[whichTileHovered].hasPlant) {
-						if (itemChosenSprite.getTexture() == Sprites::carrotSeedsSprite.getTexture()) {
-							tiles[whichTileHovered].setPlant(PlantType::CARROT, 4, clock.getElapsedTime(), 4);
-						}else if (itemChosenSprite.getTexture() == Sprites::cucumberSeedsSprite.getTexture()) {
-							tiles[whichTileHovered].setPlant(PlantType::CUCUMBER, 4, clock.getElapsedTime(), 4);
-						}
-						itemChosenQuantityNumber--;
-						itemChosenQuantity.setString(std::to_string(itemChosenQuantityNumber));
-						tiles[whichTileHovered].updatePlant(clock.getElapsedTime());
-					}
-					if (itemChosenQuantityNumber == 0) {
-						toolChosen = 0;
-						isItemChosen = false;
-						itemChosenQuantity.setString("");
-					}
-					break;
-				case 3:
-					if (tiles[whichTileHovered].getBg().getGlobalBounds().contains(relMousePos.x, relMousePos.y) && tiles[whichTileHovered].hasPlant && tiles[whichTileHovered].isRipe()) {
-						
-						// TODO: ANIMATION OF SICKLE CUTTING 
-						switch (tiles[whichTileHovered].getPlant()) {
-						case PlantType::CARROT:
-							inventory.addItem(Item(Sprites::carrotSprites[4], 1));
-							break;
-						case PlantType::CUCUMBER:
-							inventory.addItem(Item(Sprites::cucumberSprites[4], 1));
-							break;
-						}
-						tiles[whichTileHovered].reset();
-					}
-				}
-
-			}
 			if (event.mouseButton.button == 1) {
 				moving = false;
 			}

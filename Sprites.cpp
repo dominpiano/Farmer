@@ -22,18 +22,16 @@ Sprites::Sprites() {
 	cucumberSeedsSprite.setTexture(cucumberSeedsTexture);
 
 	//Plants
-	sf::Sprite temp;
 	plantsTexture.loadFromFile("assets/textures/plants/plants.png");
 	//cucumbersTexture.loadFromFile("assets/textures/plants/cucumbers.png");
-	for (int i = 0; i < 4; i++) {
-		temp.setTexture(plantsTexture);
-		temp.setTextureRect(sf::IntRect(i * 100, 0, 100, 100));
-		carrotSprites.emplace_back(temp);
+	plantSprite.setTexture(plantsTexture);
+	for (int i = 0; i < 5; i++) {
+		plantSprite.setTextureRect(sf::IntRect(i * 100, 0, 100, 100));
+		carrotSprites.emplace_back(plantSprite);
 	}
 	for (int i = 0; i < 5; i++) {
-		temp.setTexture(plantsTexture);
-		temp.setTextureRect(sf::IntRect(i * 100, 100, 100, 100));
-		cucumberSprites.emplace_back(temp);
+		plantSprite.setTextureRect(sf::IntRect(i * 100, 100, 100, 100));
+		cucumberSprites.emplace_back(plantSprite);
 	}
 
 
@@ -86,6 +84,7 @@ sf::Sprite Sprites::carrotSeedsSprite;
 sf::Sprite Sprites::cucumberSeedsSprite;
 
 //Plants
+sf::Sprite Sprites::plantSprite;
 std::vector<sf::Sprite> Sprites::carrotSprites;
 std::vector<sf::Sprite> Sprites::cucumberSprites;
 

@@ -19,8 +19,9 @@ Inventory::Inventory() {
 
 void Inventory::addItem(Item it) {
 	for (auto& i : itemSlots) {
-		if (i.getItem().getTexture() == it.getItem().getTexture() && it.getItem().getTexture() == Sprites::carrotSprites[0].getTexture()) {
+		if (i.getItem().getTexture() == it.getItem().getTexture() && it.getItem().getTexture() == Sprites::plantSprite.getTexture()) {
 			if (i.getItem().getTextureRect().top == it.getItem().getTextureRect().top) {
+				std::cout << it.getItem().getTextureRect().top << std::endl;
 				i.setQuantity(i.getQuantity() + 1);
 			}
 			break;
