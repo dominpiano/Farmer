@@ -33,7 +33,7 @@ public:
 	void setQuantity(int qty_);
 	int getQuantity();
 	sf::Text getQuantityDisplay();
-	//void setItemPos(sf::Vector2f pos);
+	void removeItem();
 	void setItemPos(float x, float y);
 	void renderItem(sf::RenderWindow& window);
 };

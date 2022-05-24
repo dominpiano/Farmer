@@ -44,10 +44,10 @@ private:
 	sf::Sprite shovelToolSprite;
 	sf::Sprite handToolSprite;
 	sf::Sprite sickleToolSprite;
-	sf::Sprite itemChosenSprite;
-	sf::Text itemChosenQuantity;
-	int itemChosenQuantityNumber;
-	bool isItemChosen;
+	sf::Sprite itemChosenSprite; //An item which is chosen right now
+	sf::Text itemChosenQuantity; //Quantity text to display
+	int itemChosenQuantityNumber; //An integer to tell a quantity
+	bool isItemChosen; //Bool to check if item (seed) is chosen
 
 	//Inventory
 	bool isInventoryOpen = false;
@@ -70,6 +70,7 @@ private:
 	//Helper functions
 	sf::Vector2f getRightDownCorner();
 	sf::Vector2f getLeftUpCorner();
+	void updateQuantitiesOfItems();
 
 	//Functions
 	void initVars();

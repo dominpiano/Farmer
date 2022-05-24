@@ -19,6 +19,25 @@ sf::Vector2f Game::getLeftUpCorner() {
 	return sf::Vector2f(view.getCenter().x - WIDTH / 2, view.getCenter().y - HEIGHT / 2);
 }
 
+void Game::updateQuantitiesOfItems() {
+	//Updating quantities of items
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 3; j++) {
+			if (isItemChosen && inventory.itemSlots[j * 8 + i].getItem().getTexture() == itemChosenSprite.getTexture()) {
+				if (inventory.itemSlots[j * 8 + i].getQuantity() != itemChosenQuantityNumber) {
+					if (itemChosenQuantityNumber == 0) {
+						inventory.itemSlots[j * 8 + i].removeItem();
+					}
+					else {
+						inventory.itemSlots[j * 8 + i].setQuantity(itemChosenQuantityNumber);
+					}
+				}
+				break;
+			}
+		}
+	}
+}
+
 //Constructors & Destructors
 Game::Game() {
 
@@ -178,19 +197,7 @@ void Game::pollEvents() {
 					inventory.updatePosition(view.getCenter());
 					//Only if inventory is in INVENTORY mode
 					if (inventory.whichTabActive == 0) {
-						//Updating quantities of items
-						for (int i = 0; i < 8; i++) {
-							for (int j = 0; j < 3; j++) {
-								if (inventory.itemSlots[j * 8 + i].getQuantity() != itemChosenQuantityNumber) {
-									if (inventory.itemSlots[j * 8 + i].getItem().getTexture() == itemChosenSprite.getTexture()) {
-										if (itemChosenQuantityNumber == 0) {
-											inventory.itemSlots[j * 8 + i].slotHasItem = false;
-										}
-										inventory.itemSlots[j * 8 + i].setQuantity(itemChosenQuantityNumber);
-									}
-								}
-							}
-						}
+						updateQuantitiesOfItems();
 					}
 
 					//Setting up position of shop cards
@@ -211,14 +218,15 @@ void Game::pollEvents() {
 			if (event.mouseButton.button == 0) {
 				//Garden stuff, farming ect
 				switch (toolChosen) {
-				case 1: //Shovel in hand
-					//cout << "bruh" << endl;
+				case 1: 
+					//Shovel in hand
 					//Check if mouse is still over this particular Tile, then change the background
 					if (tiles[whichTileHovered].getBg().getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
 						tiles[whichTileHovered].setBg(Sprites::soil0Sprite);
 					}
 					break;
-				case 2: //Seed in hand
+				case 2: 
+					//Seed in hand
 					if (tiles[whichTileHovered].getBg().getGlobalBounds().contains(relMousePos.x, relMousePos.y) && 
 						tiles[whichTileHovered].getBg().getTexture() == Sprites::soil0Sprite.getTexture() && !tiles[whichTileHovered].hasPlant) {
 						if (itemChosenSprite.getTexture() == Sprites::carrotSeedsSprite.getTexture()) {
@@ -233,6 +241,7 @@ void Game::pollEvents() {
 						itemChosenQuantityNumber--;
 						itemChosenQuantity.setString(std::to_string(itemChosenQuantityNumber));
 						tiles[whichTileHovered].updatePlant(clock.getElapsedTime());
+						updateQuantitiesOfItems();
 					}
 					if (itemChosenQuantityNumber == 0) {
 						toolChosen = 0;
@@ -240,7 +249,8 @@ void Game::pollEvents() {
 						itemChosenQuantity.setString("");
 					}
 					break;
-				case 3:
+				case 3: 
+					//Collecting plants
 					if (tiles[whichTileHovered].getBg().getGlobalBounds().contains(relMousePos.x, relMousePos.y) && tiles[whichTileHovered].hasPlant && tiles[whichTileHovered].isRipe()) {
 
 						// TODO: ANIMATION OF SICKLE CUTTING 
@@ -252,7 +262,7 @@ void Game::pollEvents() {
 							inventory.addItem(Item(Sprites::cucumberSprites[4], 1));
 							break;
 						case PlantType::POTATO:
-							inventory.addItem(Item(Sprites::potatoSprites[4], 1));
+							inventory.addItem(Item(Sprites::potatoSeedsSprite, 1));
 							break;
 						}
 						tiles[whichTileHovered].reset();

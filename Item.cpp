@@ -19,7 +19,6 @@ Item::Item() {
 void Item::setItem(sf::Sprite item) {
 	itemSprite = item;
 	//Set item position to be in the center
-	//std::cout << sf::Vector2f((100 - item.getTextureRect().width) / 2, (100 - item.getTextureRect().height) / 2) << std::endl;
 	itemSprite.setPosition(slotPos + sf::Vector2f((100 - itemSprite.getTextureRect().width) / 2, (100 - itemSprite.getTextureRect().height) / 2));
 }
 sf::Sprite Item::getItem() {
@@ -40,6 +39,12 @@ int Item::getQuantity() {
 }
 sf::Text Item::getQuantityDisplay() {
 	return qtyDisp;
+}
+void Item::removeItem() {
+	slotHasItem = false;
+	quantity = 0;
+	qtyDisp.setString("");
+	itemSprite = sf::Sprite();
 }
 void Item::setItemPos(float x, float y) {
 	slotPos = sf::Vector2f(x, y);
