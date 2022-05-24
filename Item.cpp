@@ -35,20 +35,6 @@ void Item::setQuantity(int qty_) {
 		qtyDisp.setString(std::to_string(quantity));
 	}
 }
-void Item::addOne() {
-	quantity++;
-	qtyDisp.setString(std::to_string(quantity));
-}
-void Item::removeOne() {
-	if (quantity > 0) {
-		quantity--;
-		qtyDisp.setString(std::to_string(quantity));
-	}
-	else {
-		slotHasItem = false;
-		qtyDisp.setString("");
-	}
-}
 int Item::getQuantity() {
 	return quantity;
 }

@@ -18,10 +18,10 @@ private:
 	//Seeds
 	sf::Texture carrotSeedsTexture;
 	sf::Texture cucumberSeedsTexture;
+	sf::Texture potatoSeedsTexture;
 
 	//Plants
 	sf::Texture plantsTexture;
-	//sf::Texture cucumbersTexture;
 
 	//Inventory
 	sf::Texture inventoryBackgroundTexture;
@@ -55,11 +55,13 @@ public:
 	//Seeds
 	static sf::Sprite carrotSeedsSprite;
 	static sf::Sprite cucumberSeedsSprite;
+	static sf::Sprite potatoSeedsSprite;
 
 	//Plants
 	static sf::Sprite plantSprite;
 	static std::vector<sf::Sprite> carrotSprites;
 	static std::vector<sf::Sprite> cucumberSprites;
+	static std::vector<sf::Sprite> potatoSprites;
 
 	//Inventory
 	static sf::Sprite inventoryBackgroundSprite;

@@ -149,6 +149,8 @@ void Game::setupInventory() {
 	shopCards[0].setDescr(L"Well, seeds of a carrot, what to say more?");
 	shopCards.emplace_back(ShopCard(Sprites::cucumberSeedsSprite, "Cucumber Seeds"));
 	shopCards[1].setDescr(L"Interesting seeds of a cucumber, remember to water it often!");
+	shopCards.emplace_back(ShopCard(Sprites::potatoSeedsSprite, "Potato"));
+	shopCards[2].setDescr(L"Yes, that's a potato, it can be just shoved into soil.");
 }
 
 //Public
@@ -194,6 +196,7 @@ void Game::pollEvents() {
 					//Setting up position of shop cards
 					shopCards[0].setPosition(inventory.getMainPosition() + sf::Vector2f(150, 250));
 					shopCards[1].setPosition(inventory.getMainPosition() + sf::Vector2f(370, 250));
+					shopCards[2].setPosition(inventory.getMainPosition() + sf::Vector2f(590, 250));
 
 
 					isInventoryOpen = !isInventoryOpen;
@@ -224,6 +227,9 @@ void Game::pollEvents() {
 						else if (itemChosenSprite.getTexture() == Sprites::cucumberSeedsSprite.getTexture()) {
 							tiles[whichTileHovered].setPlant(PlantType::CUCUMBER, 4, clock.getElapsedTime(), 4);
 						}
+						else if (itemChosenSprite.getTexture() == Sprites::potatoSeedsSprite.getTexture()) {
+							tiles[whichTileHovered].setPlant(PlantType::POTATO, 4, clock.getElapsedTime(), 4);
+						}
 						itemChosenQuantityNumber--;
 						itemChosenQuantity.setString(std::to_string(itemChosenQuantityNumber));
 						tiles[whichTileHovered].updatePlant(clock.getElapsedTime());
@@ -245,6 +251,9 @@ void Game::pollEvents() {
 						case PlantType::CUCUMBER:
 							inventory.addItem(Item(Sprites::cucumberSprites[4], 1));
 							break;
+						case PlantType::POTATO:
+							inventory.addItem(Item(Sprites::potatoSprites[4], 1));
+							break;
 						}
 						tiles[whichTileHovered].reset();
 					}
@@ -257,7 +266,7 @@ void Game::pollEvents() {
 					//Inventory
 					if (inventory.whichTabActive == 0) {
 						for (auto& i : inventory.itemSlots) {
-							if (i.getItem().getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
+							if (i.getItem().getGlobalBounds().contains(relMousePos.x, relMousePos.y) && i.getItem().getTexture() != Sprites::plantSprite.getTexture()) {
 								//Set position of chosen item
 								itemChosenSprite = i.getItem();
 								itemChosenSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
@@ -284,7 +293,7 @@ void Game::pollEvents() {
 										break;
 									}
 									else if (inventory.itemSlots[j].getItem().getTexture() == i.getItem().getTexture()) {
-										inventory.itemSlots[j].setQuantity(inventory.itemSlots[j].getQuantity() + 10);
+										inventory.addItem(Item(i.getItem(), 10));
 										itemChosenQuantity = inventory.itemSlots[j].getQuantityDisplay();
 										itemChosenQuantityNumber = inventory.itemSlots[j].getQuantity();
 										break;
@@ -437,5 +446,6 @@ void Game::renderInventory() {
 	if (inventory.whichTabActive == 1) {
 		shopCards[0].renderCard(*window);
 		shopCards[1].renderCard(*window);
+		shopCards[2].renderCard(*window);
 	}
 }

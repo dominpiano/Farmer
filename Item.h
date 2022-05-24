@@ -31,8 +31,6 @@ public:
 	void setItem(sf::Sprite item);
 	sf::Sprite getItem();
 	void setQuantity(int qty_);
-	void addOne();
-	void removeOne();
 	int getQuantity();
 	sf::Text getQuantityDisplay();
 	//void setItemPos(sf::Vector2f pos);
