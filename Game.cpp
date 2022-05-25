@@ -262,7 +262,7 @@ void Game::pollEvents() {
 							inventory.addItem(Item(Sprites::cucumberSprites[4], 1));
 							break;
 						case PlantType::POTATO:
-							inventory.addItem(Item(Sprites::potatoSeedsSprite, rand() % 2 + 1));
+							inventory.addItem(Item(Sprites::potatoSeedsSprite, ((rand() % 100) < 75) ? 1 : 2));
 							break;
 						}
 						tiles[whichTileHovered].reset();
