@@ -5,13 +5,13 @@ std::ostream& operator<<(std::ostream& out, const sf::Vector2f v);
 Item::Item(sf::Sprite item, int qty){
 	itemSprite = item;
 	quantity = qty;
-	qtyDisp.setFont(Resources::titleFont);
+	qtyDisp.setFont(Resources::quantityDisplayFont);
 	qtyDisp.setCharacterSize(16);
 	qtyDisp.setFillColor(sf::Color::Black);
 	qtyDisp.setString(std::to_string(quantity));
 }
 Item::Item() {
-	qtyDisp.setFont(Resources::titleFont);
+	qtyDisp.setFont(Resources::quantityDisplayFont);
 	qtyDisp.setCharacterSize(16);
 	qtyDisp.setFillColor(sf::Color::Black);
 }

@@ -37,6 +37,10 @@ void Game::updateQuantitiesOfItems() {
 		}
 	}
 }
+void Game::updateBalance(int amount) {
+	balance += amount;
+	balanceDisp.setString(std::to_string(balance) + "$");
+}
 
 //Constructors & Destructors
 Game::Game() {
@@ -83,11 +87,16 @@ void Game::initVars() {
 	//Init icon
 	icon.loadFromFile("assets/textures/icon.png");
 
-	//Setting coin animation
+	//Setting coin animation and money stuff
+	balance = 0;
 	coinTexture.loadFromFile("assets/textures/coins.png");
 	coinSprite.setTexture(coinTexture);
 	coinSprite.setPosition(20.f, 20.f);
 	coinAnim = Animation(coinTexture, sf::Vector2u(8, 1), 0.1f);
+	balanceDisp.setFont(Resources::quantityDisplayFont);
+	balanceDisp.setCharacterSize(36);
+	balanceDisp.setFillColor(sf::Color::White);
+	updateBalance(100);
 }
 void Game::initWindow() {
 	window = new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), "Farmer", sf::Style::Titlebar | sf::Style::Fullscreen, sf::ContextSettings::ContextSettings(0, 0, 10, 2, 0));
@@ -104,6 +113,7 @@ void Game::initWindow() {
 	itemChosenSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
 	itemChosenQuantity.setPosition(getRightDownCorner().x - 80 + 60, getRightDownCorner().y - 160 + 60);
 	coinSprite.setPosition(getLeftUpCorner().x + 20, getLeftUpCorner().y + 20);
+	balanceDisp.setPosition(getLeftUpCorner().x + 60, getLeftUpCorner().y + 10);
 	
 	//Set the view to window
 	window->setView(view);
@@ -327,18 +337,7 @@ void Game::pollEvents() {
 						for (auto& i : shopCards) {
 							//Buy item if clicked
 							if (inventory.buyButtonSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y) && i.getSelected()) {
-								for (int j = 0; j < 24; j++) {
-									if (!inventory.itemSlots[j].slotHasItem) {
-										inventory.addItem(Item(i.getItem(), 10));
-										break;
-									}
-									else if (inventory.itemSlots[j].getItem().getTexture() == i.getItem().getTexture()) {
-										inventory.addItem(Item(i.getItem(), 10));
-										itemChosenQuantity = inventory.itemSlots[j].getQuantityDisplay();
-										itemChosenQuantityNumber = inventory.itemSlots[j].getQuantity();
-										break;
-									}
-								}
+								inventory.addItem(Item(i.getItem(), 10));
 								inventory.whichTabActive = 0;
 							}
 							i.setSelected(false);
@@ -349,6 +348,7 @@ void Game::pollEvents() {
 						}
 					}
 				}
+
 				//We don't want to move if inventory is opened
 				else {
 					//Tool check
@@ -369,7 +369,7 @@ void Game::pollEvents() {
 			}
 
 			// Move for right button
-			else if (event.mouseButton.button == 1) { 
+			else if (event.mouseButton.button == 1 && !isInventoryOpen) { 
 				moving = true;
 				oldPos = sf::Vector2f(mousePos);
 			}
@@ -382,7 +382,6 @@ void Game::pollEvents() {
 			break;
 
 		case sf::Event::MouseMoved:
-
 			//Do nothing until mouse button is pressed
 			if (!moving) {
 				break;
@@ -404,9 +403,11 @@ void Game::pollEvents() {
 			itemChosenSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
 			itemChosenQuantity.setPosition(getRightDownCorner().x - 80 + 60, getRightDownCorner().y - 160 + 60);
 			coinSprite.setPosition(getLeftUpCorner().x + 20, getLeftUpCorner().y + 20);
+			balanceDisp.setPosition(getLeftUpCorner().x + 60, getLeftUpCorner().y + 10);
 			
 			//Setting view
 			window->setView(view);
+
 			//Recalculating position
 			oldPos = newPos;
 			break;
@@ -439,10 +440,10 @@ void Game::render() {
 
 	renderTiles();
 	renderTools();
+	renderMoney();
 	if (isInventoryOpen) {
 		renderInventory();
 	}
-	renderMoney();
 
 	window->display();
 }
@@ -479,6 +480,13 @@ void Game::renderTools() {
 }
 
 void Game::renderInventory() {
+
+	//If inventory is active, darken the background behind.
+	darken.setFillColor(sf::Color(0, 0, 0, 120));
+	darken.setPosition(getLeftUpCorner());
+	window->draw(darken);
+
+	//Render inventory
 	inventory.renderInventory(*window);
 
 	//Inventory
@@ -498,4 +506,5 @@ void Game::renderInventory() {
 
 void Game::renderMoney() {
 	window->draw(coinSprite);
+	window->draw(balanceDisp);
 }

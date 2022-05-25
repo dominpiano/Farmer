@@ -57,6 +57,7 @@ private:
 
 	//Background things
 	sf::Color bgColor = sf::Color(127, 152, 59);
+	sf::RectangleShape darken = sf::RectangleShape({ 1920, 1080 });
 	
 	//Vectors
 	std::vector<Tile> tiles;
@@ -73,11 +74,12 @@ private:
 	Animation coinAnim;
 	sf::Texture coinTexture;
 	sf::Sprite coinSprite;
+	int balance;
+	sf::Text balanceDisp;
 
 	//Helper functions
 	sf::Vector2f getRightDownCorner();
 	sf::Vector2f getLeftUpCorner();
-	void updateQuantitiesOfItems();
 
 	//Functions
 	void initVars();
@@ -87,6 +89,8 @@ private:
 	void updateMousePosition();
 	void updateTools();
 	void setupInventory();
+	void updateQuantitiesOfItems();
+	void updateBalance(int amount);
 
 	//For rendering
 	void renderTiles();

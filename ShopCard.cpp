@@ -14,7 +14,7 @@ ShopCard::ShopCard(sf::Sprite item, sf::String title) {
 	cardBackgroundSprite = Sprites::cardBackgroundSprite;
 	itemSprite = item;
 
-	itemTitleText.setFont(Resources::titleFont);
+	itemTitleText.setFont(Resources::cardDescriptionFont);
 	itemTitleText.setCharacterSize(24);
 	itemTitleText.setFillColor(sf::Color::Black);
 	itemTitleText.setString(title);
@@ -37,7 +37,7 @@ void ShopCard::setDescr(sf::String descr) {
 			counter = 0;
 		}
 	}
-	itemDescriptionText.setFont(Resources::titleFont);
+	itemDescriptionText.setFont(Resources::cardDescriptionFont);
 	itemDescriptionText.setCharacterSize(19);
 	itemDescriptionText.setFillColor(sf::Color::Black);
 	itemDescriptionText.setString(append);

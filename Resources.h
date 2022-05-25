@@ -7,8 +7,8 @@
 class Resources{
 public:
 	//Fonts
-	static sf::Font titleFont;
-	static sf::Font descriptionFont;
+	static sf::Font cardDescriptionFont;
+	static sf::Font quantityDisplayFont;
 
 	Resources();
 };

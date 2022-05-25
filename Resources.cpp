@@ -1,10 +1,10 @@
 #include "Resources.h"
 
 Resources::Resources() {
-	titleFont.loadFromFile("assets/fonts/crayon_kids.ttf");
-	descriptionFont.loadFromFile("assets/fonts/simply_olive.ttf");
+	cardDescriptionFont.loadFromFile("assets/fonts/crayon_kids.ttf");
+	quantityDisplayFont.loadFromFile("assets/fonts/coffee_extra.ttf");
 }
 
 //Fonts
-sf::Font Resources::titleFont;
-sf::Font Resources::descriptionFont;
+sf::Font Resources::cardDescriptionFont;
+sf::Font Resources::quantityDisplayFont;
