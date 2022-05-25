@@ -79,13 +79,33 @@ void Game::initVars() {
 		}
 	}
 	lastTime = clock.getElapsedTime();
+
+	//Init icon
+	icon.loadFromFile("assets/textures/icon.png");
+
+	//Setting coin animation
+	coinTexture.loadFromFile("assets/textures/coins.png");
+	coinSprite.setTexture(coinTexture);
+	coinSprite.setPosition(20.f, 20.f);
+	coinAnim = Animation(coinTexture, sf::Vector2u(8, 1), 0.1f);
 }
 void Game::initWindow() {
 	window = new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), "Farmer", sf::Style::Titlebar | sf::Style::Fullscreen, sf::ContextSettings::ContextSettings(0, 0, 10, 2, 0));
-	//window->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+	window->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 	window->setFramerateLimit(60);
 	view.setCenter(WIDTH / 2, HEIGHT / 2);
 	view.setSize(window->getDefaultView().getSize());
+	
+	//Set the farm view to center of screen and relative other things
+	view.move(-300, 0);
+	handToolSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 80);
+	shovelToolSprite.setPosition(getRightDownCorner().x - 160, getRightDownCorner().y - 80);
+	sickleToolSprite.setPosition(getRightDownCorner().x - 240, getRightDownCorner().y - 80);
+	itemChosenSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
+	itemChosenQuantity.setPosition(getRightDownCorner().x - 80 + 60, getRightDownCorner().y - 160 + 60);
+	coinSprite.setPosition(getLeftUpCorner().x + 20, getLeftUpCorner().y + 20);
+	
+	//Set the view to window
 	window->setView(view);
 }
 
@@ -383,6 +403,7 @@ void Game::pollEvents() {
 			sickleToolSprite.setPosition(getRightDownCorner().x - 240, getRightDownCorner().y - 80);
 			itemChosenSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
 			itemChosenQuantity.setPosition(getRightDownCorner().x - 80 + 60, getRightDownCorner().y - 160 + 60);
+			coinSprite.setPosition(getLeftUpCorner().x + 20, getLeftUpCorner().y + 20);
 			
 			//Setting view
 			window->setView(view);
@@ -405,6 +426,10 @@ void Game::frameUpdate() {
 		}
 		lastTime = clock.getElapsedTime();
 	}
+
+	//Update coin animation
+	coinAnim.update(0, deltaTime);
+	coinSprite.setTextureRect(coinAnim.uvRect);
 	
 }
 
@@ -417,6 +442,7 @@ void Game::render() {
 	if (isInventoryOpen) {
 		renderInventory();
 	}
+	renderMoney();
 
 	window->display();
 }
@@ -468,4 +494,8 @@ void Game::renderInventory() {
 			i.renderCard(*window);
 		}
 	}
+}
+
+void Game::renderMoney() {
+	window->draw(coinSprite);
 }

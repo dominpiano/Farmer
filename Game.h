@@ -14,15 +14,17 @@
 #include "Inventory.h"
 #include "ShopCard.h"
 #include "PlantType.h"
+#include "Animation.h"
 
 class Game {
 private:
 
 	//Variables
-	int WIDTH; //1280
-	int HEIGHT; //720
+	int WIDTH; //1920
+	int HEIGHT; //1080
 	sf::Event event;
 	sf::View view;
+	sf::Image icon;
 
 	//Positioning
 	sf::Vector2i mousePos;
@@ -67,6 +69,11 @@ private:
 	sf::Time lastTime, nextTime;
 	float deltaTime;
 
+	//Money thingies
+	Animation coinAnim;
+	sf::Texture coinTexture;
+	sf::Sprite coinSprite;
+
 	//Helper functions
 	sf::Vector2f getRightDownCorner();
 	sf::Vector2f getLeftUpCorner();
@@ -85,6 +92,7 @@ private:
 	void renderTiles();
 	void renderTools();
 	void renderInventory();
+	void renderMoney();
 
 public:
 
