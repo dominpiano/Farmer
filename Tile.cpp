@@ -82,6 +82,11 @@ void Tile::updatePlant(sf::Time actTime) {
 				plantSprite.setPosition(pos);
 				plantStage++;
 				break;
+			case PlantType::WHEAT:
+				plantSprite = Sprites::wheatSprites[0];
+				plantSprite.setPosition(pos);
+				plantStage++;
+				break;
 			}
 		}
 		if (actTime.asSeconds() - plantPlacedTime.asSeconds() >= timeRequired / stagesRequired && plantStage < stagesRequired) {
@@ -98,6 +103,10 @@ void Tile::updatePlant(sf::Time actTime) {
 				break;
 			case PlantType::POTATO:
 				plantSprite = Sprites::potatoSprites[plantStage];
+				plantSprite.setPosition(pos);
+				break;
+			case PlantType::WHEAT:
+				plantSprite = Sprites::wheatSprites[plantStage];
 				plantSprite.setPosition(pos);
 				break;
 			}

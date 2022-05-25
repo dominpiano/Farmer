@@ -170,6 +170,8 @@ void Game::setupInventory() {
 	shopCards[1].setDescr(L"Interesting seeds of a cucumber, remember to water it often!");
 	shopCards.emplace_back(ShopCard(Sprites::potatoSeedsSprite, "Potato"));
 	shopCards[2].setDescr(L"Yes, that's a potato, it can be just shoved into soil.");
+	shopCards.emplace_back(ShopCard(Sprites::wheatSeedsSprite, "Wheat"));
+	shopCards[3].setDescr(L"Yayy! Wheee(a)t!");
 }
 
 //Public
@@ -204,6 +206,7 @@ void Game::pollEvents() {
 					shopCards[0].setPosition(inventory.getMainPosition() + sf::Vector2f(150, 250));
 					shopCards[1].setPosition(inventory.getMainPosition() + sf::Vector2f(370, 250));
 					shopCards[2].setPosition(inventory.getMainPosition() + sf::Vector2f(590, 250));
+					shopCards[3].setPosition(inventory.getMainPosition() + sf::Vector2f(810, 250));
 
 
 					isInventoryOpen = !isInventoryOpen;
@@ -238,6 +241,9 @@ void Game::pollEvents() {
 						else if (itemChosenSprite.getTexture() == Sprites::potatoSeedsSprite.getTexture()) {
 							tiles[whichTileHovered].setPlant(PlantType::POTATO, 4, clock.getElapsedTime(), 4);
 						}
+						else if (itemChosenSprite.getTexture() == Sprites::wheatSeedsSprite.getTexture()) {
+							tiles[whichTileHovered].setPlant(PlantType::WHEAT, 4, clock.getElapsedTime(), 4);
+						}
 						itemChosenQuantityNumber--;
 						itemChosenQuantity.setString(std::to_string(itemChosenQuantityNumber));
 						tiles[whichTileHovered].updatePlant(clock.getElapsedTime());
@@ -263,6 +269,10 @@ void Game::pollEvents() {
 							break;
 						case PlantType::POTATO:
 							inventory.addItem(Item(Sprites::potatoSeedsSprite, ((rand() % 100) < 75) ? 1 : 2));
+							break;
+						case PlantType::WHEAT:
+							inventory.addItem(Item(Sprites::wheatSprites[4], 1));
+							inventory.addItem(Item(Sprites::wheatSeedsSprite, ((rand() % 100) < 75) ? 0 : 1));
 							break;
 						}
 						tiles[whichTileHovered].reset();
@@ -454,8 +464,8 @@ void Game::renderInventory() {
 
 	//Shop
 	if (inventory.whichTabActive == 1) {
-		shopCards[0].renderCard(*window);
-		shopCards[1].renderCard(*window);
-		shopCards[2].renderCard(*window);
+		for (auto& i : shopCards) {
+			i.renderCard(*window);
+		}
 	}
 }

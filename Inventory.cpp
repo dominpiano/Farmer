@@ -20,20 +20,22 @@ Inventory::Inventory() {
 bool isAdded = false; //Helper variable to first check a whole inventory and then decide to add new/ add to existing
 
 void Inventory::addItem(Item it) {
-	for (auto& i : itemSlots) {
-		if (i.getItem().getTexture() == it.getItem().getTexture() && i.getItem().getTextureRect().top == it.getItem().getTextureRect().top) {
-			i.setQuantity(i.getQuantity() + it.getQuantity());
-			isAdded = true;
-			break;
-		}
-	}
-	if (!isAdded) {
+	if (it.getQuantity() != 0) {
 		for (auto& i : itemSlots) {
-			if (!i.slotHasItem) {
-				i.setItem(it.getItem());
-				i.setQuantity(it.getQuantity());
-				i.slotHasItem = true;
+			if (i.getItem().getTexture() == it.getItem().getTexture() && i.getItem().getTextureRect().top == it.getItem().getTextureRect().top) {
+				i.setQuantity(i.getQuantity() + it.getQuantity());
+				isAdded = true;
 				break;
+			}
+		}
+		if (!isAdded) {
+			for (auto& i : itemSlots) {
+				if (!i.slotHasItem) {
+					i.setItem(it.getItem());
+					i.setQuantity(it.getQuantity());
+					i.slotHasItem = true;
+					break;
+				}
 			}
 		}
 	}

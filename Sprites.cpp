@@ -22,6 +22,8 @@ Sprites::Sprites() {
 	cucumberSeedsSprite.setTexture(cucumberSeedsTexture);
 	potatoSeedsTexture.loadFromFile("assets/textures/shopCards/potato.png");
 	potatoSeedsSprite.setTexture(potatoSeedsTexture);
+	wheatSeedsTexture.loadFromFile("assets/textures/shopCards/wheatSeeds.png");
+	wheatSeedsSprite.setTexture(wheatSeedsTexture);
 
 	//Plants
 	plantsTexture.loadFromFile("assets/textures/plants/plants.png");
@@ -37,6 +39,10 @@ Sprites::Sprites() {
 	for (int i = 0; i < 5; i++) {
 		plantSprite.setTextureRect(sf::IntRect(i * 100, 200, 100, 100));
 		potatoSprites.emplace_back(plantSprite);
+	}
+	for (int i = 0; i < 5; i++) {
+		plantSprite.setTextureRect(sf::IntRect(i * 100, 300, 100, 100));
+		wheatSprites.emplace_back(plantSprite);
 	}
 
 
@@ -88,12 +94,14 @@ sf::Sprite Sprites::sickleToolSprite;
 sf::Sprite Sprites::carrotSeedsSprite;
 sf::Sprite Sprites::cucumberSeedsSprite;
 sf::Sprite Sprites::potatoSeedsSprite;
+sf::Sprite Sprites::wheatSeedsSprite;
 
 //Plants
 sf::Sprite Sprites::plantSprite;
 std::vector<sf::Sprite> Sprites::carrotSprites;
 std::vector<sf::Sprite> Sprites::cucumberSprites;
 std::vector<sf::Sprite> Sprites::potatoSprites;
+std::vector<sf::Sprite> Sprites::wheatSprites;
 
 //Inventory
 sf::Sprite Sprites::inventoryBackgroundSprite;
