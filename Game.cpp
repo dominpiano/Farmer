@@ -205,6 +205,8 @@ void Game::setupInventory() {
 }
 
 //Public
+bool clickedElse = true;
+
 
 void Game::pollEvents() {
 
@@ -302,7 +304,7 @@ void Game::pollEvents() {
 							break;
 						case PlantType::WHEAT:
 							inventory.addItem(Item(Sprites::wheatSprites[4], 1));
-							inventory.addItem(Item(Sprites::wheatSeedsSprite, ((rand() % 100) < 75) ? 0 : 1));
+							inventory.addItem(Item(Sprites::wheatSeedsSprite, ((rand() % 100) < 60) ? 0 : 1));
 							break;
 						}
 						tiles[whichTileHovered].reset();
@@ -333,18 +335,47 @@ void Game::pollEvents() {
 
 					//Shop
 					if (inventory.whichTabActive == 1) {
-						inventory.activateBuyButton(false);
+						
+
 						for (auto& i : shopCards) {
-							//Buy item if clicked
-							if (inventory.buyButtonSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y) && i.getSelected()) {
-								inventory.addItem(Item(i.getItem(), 10));
-								inventory.whichTabActive = 0;
+
+							if (i.getSelected()) {
+								//Change item amount
+								if (inventory.itemChangeAmountSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
+									//std::cout << "change" << std::endl;
+									inventory.changeItemAmount(relMousePos);
+									continue;
+								}
+								else {
+									clickedElse = true;
+								}
+
+								if (inventory.buyButtonSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
+									inventory.addItem(Item(i.getItem(), inventory.currentItemAmount));
+									updateBalance(-inventory.currentItemAmount);
+									inventory.whichTabActive = 0;
+								}
+								else {
+									clickedElse = true;
+								}
 							}
-							i.setSelected(false);
+
+							//Select one of the cards
 							if (i.cardBackgroundSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
+								inventory.currentItemAmount = 10;
 								i.setSelected(true);
 								inventory.activateBuyButton(true);
+								clickedElse = false;
 							}
+
+							
+							
+
+							if (clickedElse) {
+								i.setSelected(false);
+								inventory.activateBuyButton(false);
+							}
+
 						}
 					}
 				}

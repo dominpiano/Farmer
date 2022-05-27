@@ -27,6 +27,9 @@ public:
 	sf::Sprite inventorySprite;
 	sf::Sprite shopSprite;
 	sf::Sprite buyButtonSprite;
+	sf::Sprite itemChangeAmountSprite;
+	sf::Text itemAmountDisplay;
+	int currentItemAmount;
 	std::vector<Item> itemSlots;
 
 	//Constructors & functions
@@ -36,6 +39,7 @@ public:
 	void activateBuyButton(bool toggle);
 	void updatePosition(sf::Vector2f center);
 	void checkTabChanged(sf::Vector2i mousePos);
+	void changeItemAmount(sf::Vector2i pos);
 	sf::Vector2f getMainPosition();
 	void renderInventory(sf::RenderWindow& window);
 };

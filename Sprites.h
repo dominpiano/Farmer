@@ -33,6 +33,7 @@ private:
 	sf::Texture shopDeactiveTabTexture;
 	sf::Texture buyButtonGrayTexture;
 	sf::Texture buyButtonColorTexture;
+	sf::Texture itemChangeAmountTexture;
 
 	//Shop cards
 	sf::Texture cardBackgroundTexture;
@@ -75,6 +76,7 @@ public:
 	static sf::Sprite shopDeactiveTabSprite;
 	static sf::Sprite buyButtonGraySprite;
 	static sf::Sprite buyButtonColorSprite;
+	static sf::Sprite itemChangeAmountSprite;
 
 	//Shop cards
 	static sf::Sprite cardBackgroundSprite;
