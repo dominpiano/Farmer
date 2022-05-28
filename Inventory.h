@@ -11,6 +11,7 @@
 #include <SFML/Network.hpp>
 #include "Sprites.h"
 #include "Item.h"
+#include "ShopCard.h"
 
 class Inventory{
 private:
@@ -28,15 +29,20 @@ public:
 	sf::Sprite shopSprite;
 	sf::Sprite buyButtonSprite;
 	sf::Sprite itemChangeAmountSprite;
-	sf::Text itemAmountDisplay;
 	int currentItemAmount;
+	int currentItemPrice;
+	sf::Text itemAmountDisplay;
+	int totalPrice;
+	sf::Text totalPriceDisplay;
 	std::vector<Item> itemSlots;
+	std::vector<ShopCard> shopCards;
 
 	//Constructors & functions
 	int whichTabActive = 0;
 	Inventory();
 	void addItem(Item it);
 	void activateBuyButton(bool toggle);
+	void setCurrentItemPrice(int price);
 	void updatePosition(sf::Vector2f center);
 	void checkTabChanged(sf::Vector2i mousePos);
 	void changeItemAmount(sf::Vector2i pos);

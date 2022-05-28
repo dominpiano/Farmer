@@ -194,19 +194,11 @@ void Game::updateTools() {
 	}
 }
 void Game::setupInventory() {
-	shopCards.emplace_back(ShopCard(Sprites::carrotSeedsSprite, "Carrot Seeds"));
-	shopCards[0].setDescr(L"Well, seeds of a carrot, what to say more?");
-	shopCards.emplace_back(ShopCard(Sprites::cucumberSeedsSprite, "Cucumber Seeds"));
-	shopCards[1].setDescr(L"Interesting seeds of a cucumber, remember to water it often!");
-	shopCards.emplace_back(ShopCard(Sprites::potatoSeedsSprite, "Potato"));
-	shopCards[2].setDescr(L"Yes, that's a potato, it can be just shoved into soil.");
-	shopCards.emplace_back(ShopCard(Sprites::wheatSeedsSprite, "Wheat"));
-	shopCards[3].setDescr(L"Yayy! Wheee(a)t!");
+	
 }
 
 //Public
-bool clickedElse = true;
-
+bool affordable = false;
 
 void Game::pollEvents() {
 
@@ -235,10 +227,10 @@ void Game::pollEvents() {
 					}
 
 					//Setting up position of shop cards
-					shopCards[0].setPosition(inventory.getMainPosition() + sf::Vector2f(150, 250));
-					shopCards[1].setPosition(inventory.getMainPosition() + sf::Vector2f(370, 250));
-					shopCards[2].setPosition(inventory.getMainPosition() + sf::Vector2f(590, 250));
-					shopCards[3].setPosition(inventory.getMainPosition() + sf::Vector2f(810, 250));
+					inventory.shopCards[0].setPosition(inventory.getMainPosition() + sf::Vector2f(150, 250));
+					inventory.shopCards[1].setPosition(inventory.getMainPosition() + sf::Vector2f(370, 250));
+					inventory.shopCards[2].setPosition(inventory.getMainPosition() + sf::Vector2f(590, 250));
+					inventory.shopCards[3].setPosition(inventory.getMainPosition() + sf::Vector2f(810, 250));
 
 
 					isInventoryOpen = !isInventoryOpen;
@@ -335,47 +327,50 @@ void Game::pollEvents() {
 
 					//Shop
 					if (inventory.whichTabActive == 1) {
-						
-
-						for (auto& i : shopCards) {
-
-							if (i.getSelected()) {
-								//Change item amount
-								if (inventory.itemChangeAmountSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
-									//std::cout << "change" << std::endl;
-									inventory.changeItemAmount(relMousePos);
-									continue;
-								}
-								else {
-									clickedElse = true;
-								}
-
-								if (inventory.buyButtonSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
-									inventory.addItem(Item(i.getItem(), inventory.currentItemAmount));
-									updateBalance(-inventory.currentItemAmount);
-									inventory.whichTabActive = 0;
-								}
-								else {
-									clickedElse = true;
-								}
-							}
+						for (auto& i : inventory.shopCards) {
 
 							//Select one of the cards
 							if (i.cardBackgroundSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
 								inventory.currentItemAmount = 10;
+								inventory.setCurrentItemPrice(i.itemPrice);
 								i.setSelected(true);
-								inventory.activateBuyButton(true);
-								clickedElse = false;
 							}
 
-							
-							
+							if (i.getSelected()) {
+								//Change item amount
+								if (inventory.itemChangeAmountSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y) && i.getSelected()) {
+									inventory.changeItemAmount(relMousePos);
+									inventory.setCurrentItemPrice(i.itemPrice);
+								}
 
-							if (clickedElse) {
+								//If can afford, activate button
+								if (inventory.totalPrice <= balance) {
+									inventory.activateBuyButton(true);
+								}
+								else {
+									inventory.activateBuyButton(false);
+								}
+								//If activated, able to buy
+								if (inventory.buyButtonSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y) && inventory.buyButtonSprite.getTexture() == Sprites::buyButtonColorSprite.getTexture()) {
+									inventory.addItem(Item(i.getItem(), inventory.currentItemAmount));
+									updateBalance(-inventory.totalPrice);
+									inventory.whichTabActive = 0;
+								}
+							}
+
+							if (!inventory.buyButtonSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y) && !i.cardBackgroundSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y) && !inventory.itemChangeAmountSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
+								bool isAnySel = false;
 								i.setSelected(false);
-								inventory.activateBuyButton(false);
+								for (auto& s : inventory.shopCards) {
+									if (s.getSelected()) {
+										isAnySel = true;
+										break;
+									}
+								}
+								if (!isAnySel) {
+									inventory.activateBuyButton(false);
+								}
 							}
-
 						}
 					}
 				}
@@ -529,7 +524,7 @@ void Game::renderInventory() {
 
 	//Shop
 	if (inventory.whichTabActive == 1) {
-		for (auto& i : shopCards) {
+		for (auto& i : inventory.shopCards) {
 			i.renderCard(*window);
 		}
 	}

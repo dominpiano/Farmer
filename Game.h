@@ -12,7 +12,6 @@
 #include "Sprites.h"
 #include "Resources.h"
 #include "Inventory.h"
-#include "ShopCard.h"
 #include "PlantType.h"
 #include "Animation.h"
 
@@ -62,7 +61,6 @@ private:
 	//Vectors
 	std::vector<Tile> tiles;
 	std::vector<sf::Sprite> backGround;
-	std::vector<ShopCard> shopCards;
 
 	//Time
 	sf::Clock clock;

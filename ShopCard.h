@@ -19,15 +19,15 @@ private:
 
 	sf::Text itemTitleText;
 	sf::Text itemDescriptionText;
+	sf::Text itemPriceText;
 
-	sf::Sprite buttonBuySprite;
-
-	bool isSelected;
+	bool isSelected = false;
 public:
 	//Constructos
 	ShopCard();
-	ShopCard(sf::Sprite item, sf::String title);
+	ShopCard(sf::Sprite item, sf::String title, int price);
 	
+	int itemPrice;
 	sf::Sprite cardBackgroundSprite;
 
 	//Functions

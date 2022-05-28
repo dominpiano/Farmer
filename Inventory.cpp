@@ -13,10 +13,27 @@ Inventory::Inventory() {
 	shopDeactiveTabSprite = Sprites::shopDeactiveTabSprite;
 	buyButtonSprite = Sprites::buyButtonGraySprite;
 	itemChangeAmountSprite = Sprites::itemChangeAmountSprite;
+
+	//Texts
 	itemAmountDisplay.setFont(Resources::quantityDisplayFont);
 	itemAmountDisplay.setCharacterSize(32);
 	itemAmountDisplay.setFillColor(sf::Color::Black);
 	itemAmountDisplay.setString(std::to_string(currentItemAmount));
+
+	totalPriceDisplay.setFont(Resources::quantityDisplayFont);
+	totalPriceDisplay.setCharacterSize(32);
+	totalPriceDisplay.setFillColor(sf::Color::Black);
+	totalPriceDisplay.setString(std::to_string(totalPrice) + "$");
+
+	shopCards.emplace_back(ShopCard(Sprites::carrotSeedsSprite, "Carrot Seeds", 5));
+	shopCards[0].setDescr(L"Well, seeds of a carrot, what to say more?");
+	shopCards.emplace_back(ShopCard(Sprites::cucumberSeedsSprite, "Cucumber Seeds", 4));
+	shopCards[1].setDescr(L"Interesting seeds of a cucumber, remember to water it often!");
+	shopCards.emplace_back(ShopCard(Sprites::potatoSeedsSprite, "Potato", 3));
+	shopCards[2].setDescr(L"Yes, that's a potato, it can be just shoved into soil.");
+	shopCards.emplace_back(ShopCard(Sprites::wheatSeedsSprite, "Wheat", 2));
+	shopCards[3].setDescr(L"Yayy! Wheee(a)t!");
+
 	for (int i = 0; i < 24; i++) {
 		itemSlots.emplace_back(Item());
 	}
@@ -59,6 +76,13 @@ void Inventory::activateBuyButton(bool toggle) {
 	itemAmountDisplay.setString(std::to_string(currentItemAmount));
 }
 
+void Inventory::setCurrentItemPrice(int price) {
+	currentItemPrice = price;
+	totalPrice = currentItemAmount * currentItemPrice;
+	totalPriceDisplay.setString(std::to_string(currentItemAmount * currentItemPrice) + "$");
+	itemAmountDisplay.setString(std::to_string(currentItemAmount));
+}
+
 void Inventory::updatePosition(sf::Vector2f center) {
 	inventorySprite.setPosition(center.x - 1500 / 2, center.y - 900 / 2);
 	shopSprite.setPosition(center.x - 1500 / 2, center.y - 900 / 2);
@@ -69,6 +93,7 @@ void Inventory::updatePosition(sf::Vector2f center) {
 	buyButtonSprite.setPosition(getMainPosition().x + 1330 - 150, getMainPosition().y + 750 - 50);
 	itemChangeAmountSprite.setPosition(getMainPosition().x + 1330 - 500, getMainPosition().y + 750 - 50);
 	itemAmountDisplay.setPosition(getMainPosition().x + 970, getMainPosition().y + 650);
+	totalPriceDisplay.setPosition(getMainPosition().x + 1330 - 75 - totalPriceDisplay.getGlobalBounds().width/2, getMainPosition().y + 650);
 	//1185 740
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 3; j++) {
@@ -89,10 +114,20 @@ void Inventory::checkTabChanged(sf::Vector2i mousePos) {
 
 void Inventory::changeItemAmount(sf::Vector2i pos) {
 	if (pos.x < itemChangeAmountSprite.getGlobalBounds().left + 70) {
-		currentItemAmount -= 10;
+		if (currentItemAmount - 10 >= 0){
+			currentItemAmount -= 10;
+		}
+		else {
+			currentItemAmount = 0;
+		}
 	}
 	else if (pos.x > itemChangeAmountSprite.getGlobalBounds().left + 74 && pos.x < itemChangeAmountSprite.getGlobalBounds().left + 144) {
-		currentItemAmount -= 1;
+		if (currentItemAmount - 1 >= 0) {
+			currentItemAmount -= 1;
+		}
+		else {
+			currentItemAmount = 0;
+		}
 	}
 	else if (pos.x > itemChangeAmountSprite.getGlobalBounds().left + 148 && pos.x < itemChangeAmountSprite.getGlobalBounds().left + 218) {
 		currentItemAmount += 1;
@@ -120,8 +155,11 @@ void Inventory::renderInventory(sf::RenderWindow& window) {
 		window.draw(shopActiveTabSprite);
 		window.draw(buyButtonSprite);
 		window.draw(itemChangeAmountSprite);
-		if (buyButtonSprite.getTexture() == Sprites::buyButtonColorSprite.getTexture()) {
-			window.draw(itemAmountDisplay);
+		for (auto& i : shopCards) {
+			if (i.getSelected()) {
+				window.draw(itemAmountDisplay);
+				window.draw(totalPriceDisplay);
+			}
 		}
 		break;
 	}
