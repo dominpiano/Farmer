@@ -27,6 +27,11 @@ public:
 	//Variables
 	sf::Sprite inventorySprite;
 	sf::Sprite shopSprite;
+
+	//Inv sell etc.
+	sf::Sprite sellButtonSprite;
+
+	//Shop buy etc.
 	sf::Sprite buyButtonSprite;
 	sf::Sprite itemChangeAmountSprite;
 	int currentItemAmount;
@@ -42,10 +47,11 @@ public:
 	Inventory();
 	void addItem(Item it);
 	void activateBuyButton(bool toggle);
+	void activateSellButton(bool toggle);
 	void setCurrentItemPrice(int price);
 	void updatePosition(sf::Vector2f center);
-	void checkTabChanged(sf::Vector2i mousePos);
-	void changeItemAmount(sf::Vector2i pos);
+	void checkTabChanged(sf::Vector2f mousePos);
+	void changeItemAmount(sf::Vector2f pos);
 	sf::Vector2f getMainPosition();
 	void renderInventory(sf::RenderWindow& window);
 };

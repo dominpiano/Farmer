@@ -12,6 +12,7 @@ Inventory::Inventory() {
 	shopActiveTabSprite = Sprites::shopActiveTabSprite;
 	shopDeactiveTabSprite = Sprites::shopDeactiveTabSprite;
 	buyButtonSprite = Sprites::buyButtonGraySprite;
+	sellButtonSprite = Sprites::sellButtonGraySprite;
 	itemChangeAmountSprite = Sprites::itemChangeAmountSprite;
 
 	//Texts
@@ -67,13 +68,23 @@ void Inventory::addItem(Item it) {
 void Inventory::activateBuyButton(bool toggle) {
 	if (toggle) {
 		buyButtonSprite = Sprites::buyButtonColorSprite;
-		buyButtonSprite.setPosition(getMainPosition().x + 1330 - 150, getMainPosition().y + 750 - 50);
 	}
 	else {
 		buyButtonSprite = Sprites::buyButtonGraySprite;
-		buyButtonSprite.setPosition(getMainPosition().x + 1330 - 150, getMainPosition().y + 750 - 50);
 	}
+	buyButtonSprite.setPosition(getMainPosition().x + 1330 - 150, getMainPosition().y + 750 - 50);
 	itemAmountDisplay.setString(std::to_string(currentItemAmount));
+}
+
+void Inventory::activateSellButton(bool toggle) {
+	if (toggle) {
+		sellButtonSprite = Sprites::sellButtonColorSprite;
+	}
+	else {
+		sellButtonSprite = Sprites::sellButtonGraySprite;
+	}
+	sellButtonSprite.setPosition(getMainPosition().x + 1240 - 150, getMainPosition().y + 300 - 50);
+
 }
 
 void Inventory::setCurrentItemPrice(int price) {
@@ -91,6 +102,7 @@ void Inventory::updatePosition(sf::Vector2f center) {
 	shopActiveTabSprite.setPosition(getMainPosition().x + 99 + invActiveTabSprite.getTexture()->getSize().x, getMainPosition().y);
 	shopDeactiveTabSprite.setPosition(getMainPosition().x + 99 + invActiveTabSprite.getTexture()->getSize().x, getMainPosition().y);
 	buyButtonSprite.setPosition(getMainPosition().x + 1330 - 150, getMainPosition().y + 750 - 50);
+	sellButtonSprite.setPosition(getMainPosition().x + 1240 - 150, getMainPosition().y + 300 - 50);
 	itemChangeAmountSprite.setPosition(getMainPosition().x + 1330 - 500, getMainPosition().y + 750 - 50);
 	itemAmountDisplay.setPosition(getMainPosition().x + 970, getMainPosition().y + 650);
 	totalPriceDisplay.setPosition(getMainPosition().x + 1330 - 75 - totalPriceDisplay.getGlobalBounds().width/2, getMainPosition().y + 650);
@@ -103,16 +115,16 @@ void Inventory::updatePosition(sf::Vector2f center) {
 	}
 }
 
-void Inventory::checkTabChanged(sf::Vector2i mousePos) {
-	if (invDeactiveTabSprite.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+void Inventory::checkTabChanged(sf::Vector2f mousePos) {
+	if (invDeactiveTabSprite.getGlobalBounds().contains(mousePos)) {
 		whichTabActive = 0;
 	}
-	else if (shopDeactiveTabSprite.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+	else if (shopDeactiveTabSprite.getGlobalBounds().contains(mousePos)) {
 		whichTabActive = 1;
 	}
 }
 
-void Inventory::changeItemAmount(sf::Vector2i pos) {
+void Inventory::changeItemAmount(sf::Vector2f pos) {
 	if (pos.x < itemChangeAmountSprite.getGlobalBounds().left + 70) {
 		if (currentItemAmount - 10 >= 0){
 			currentItemAmount -= 10;
@@ -149,6 +161,7 @@ void Inventory::renderInventory(sf::RenderWindow& window) {
 	case 0:
 		window.draw(invActiveTabSprite);
 		window.draw(shopDeactiveTabSprite);
+		window.draw(sellButtonSprite);
 		break;
 	case 1:
 		window.draw(invDeactiveTabSprite);

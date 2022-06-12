@@ -14,6 +14,7 @@
 #include "Inventory.h"
 #include "PlantType.h"
 #include "Animation.h"
+#include "Menu.h"
 
 class Game {
 private:
@@ -27,7 +28,7 @@ private:
 
 	//Positioning
 	sf::Vector2i mousePos;
-	sf::Vector2i relMousePos; //VERY IMPORTANT!!!! MOUSE POSITION RELATIVE TO VIEWPORT - REGARDLESS OF VIEW, COORDINATES THE SAME AS NORMAL
+	sf::Vector2f relMousePos; //VERY IMPORTANT!!!! MOUSE POSITION RELATIVE TO VIEWPORT - REGARDLESS OF VIEW, COORDINATES THE SAME AS NORMAL
 	sf::Vector2f oldPos, newPos, deltaPos;
 	sf::Vector2f viewCenter;
 	bool moving = false;
@@ -53,6 +54,10 @@ private:
 	//Inventory
 	bool isInventoryOpen = false;
 	Inventory inventory;
+	//Menu in inventory
+	Menu* menu = nullptr;
+	bool isMenuOpen = false;
+	Item menuItem;
 
 	//Background things
 	sf::Color bgColor = sf::Color(127, 152, 59);

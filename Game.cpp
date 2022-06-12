@@ -212,7 +212,13 @@ void Game::pollEvents() {
 			//Keys pressed
 			if (event.key.code == sf::Keyboard::Escape) {
 				if (isInventoryOpen) {
-					isInventoryOpen = false;
+					if (isMenuOpen) {
+						isMenuOpen = false;
+						delete menu;
+					}
+					else {
+						isInventoryOpen = false;
+					}
 				}
 				else {
 					window->close();
@@ -248,25 +254,25 @@ void Game::pollEvents() {
 				case 1: 
 					//Shovel in hand
 					//Check if mouse is still over this particular Tile, then change the background
-					if (tiles[whichTileHovered].getBg().getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
+					if (tiles[whichTileHovered].getBg().getGlobalBounds().contains(relMousePos)) {
 						tiles[whichTileHovered].setBg(Sprites::soil0Sprite);
 					}
 					break;
 				case 2: 
 					//Seed in hand
-					if (tiles[whichTileHovered].getBg().getGlobalBounds().contains(relMousePos.x, relMousePos.y) && 
+					if (tiles[whichTileHovered].getBg().getGlobalBounds().contains(relMousePos) && 
 						tiles[whichTileHovered].getBg().getTexture() == Sprites::soil0Sprite.getTexture() && !tiles[whichTileHovered].hasPlant) {
 						if (itemChosenSprite.getTexture() == Sprites::carrotSeedsSprite.getTexture()) {
-							tiles[whichTileHovered].setPlant(PlantType::CARROT, 4, clock.getElapsedTime(), 4);
+							tiles[whichTileHovered].setPlant(PlantType::CARROT, 4, clock.getElapsedTime(), 240.f);
 						}
 						else if (itemChosenSprite.getTexture() == Sprites::cucumberSeedsSprite.getTexture()) {
-							tiles[whichTileHovered].setPlant(PlantType::CUCUMBER, 4, clock.getElapsedTime(), 4);
+							tiles[whichTileHovered].setPlant(PlantType::CUCUMBER, 4, clock.getElapsedTime(), 120.f);
 						}
 						else if (itemChosenSprite.getTexture() == Sprites::potatoSeedsSprite.getTexture()) {
-							tiles[whichTileHovered].setPlant(PlantType::POTATO, 4, clock.getElapsedTime(), 4);
+							tiles[whichTileHovered].setPlant(PlantType::POTATO, 4, clock.getElapsedTime(), 100.f);
 						}
 						else if (itemChosenSprite.getTexture() == Sprites::wheatSeedsSprite.getTexture()) {
-							tiles[whichTileHovered].setPlant(PlantType::WHEAT, 4, clock.getElapsedTime(), 4);
+							tiles[whichTileHovered].setPlant(PlantType::WHEAT, 4, clock.getElapsedTime(), 140.f);
 						}
 						itemChosenQuantityNumber--;
 						itemChosenQuantity.setString(std::to_string(itemChosenQuantityNumber));
@@ -281,7 +287,7 @@ void Game::pollEvents() {
 					break;
 				case 3: 
 					//Collecting plants
-					if (tiles[whichTileHovered].getBg().getGlobalBounds().contains(relMousePos.x, relMousePos.y) && tiles[whichTileHovered].hasPlant && tiles[whichTileHovered].isRipe()) {
+					if (tiles[whichTileHovered].getBg().getGlobalBounds().contains(relMousePos) && tiles[whichTileHovered].hasPlant && tiles[whichTileHovered].isRipe()) {
 
 						// TODO: ANIMATION OF SICKLE CUTTING 
 						switch (tiles[whichTileHovered].getPlant()) {
@@ -304,13 +310,15 @@ void Game::pollEvents() {
 				}
 
 				//Inventory mouse events
+				
+				//We don't want to move if inventory is opened
 				if (isInventoryOpen) {
 					inventory.checkTabChanged(relMousePos);
 
 					//Inventory
-					if (inventory.whichTabActive == 0) {
+					if (inventory.whichTabActive == 0 && !isMenuOpen) {
 						for (auto& i : inventory.itemSlots) {
-							if (i.getItem().getGlobalBounds().contains(relMousePos.x, relMousePos.y) && i.getItem().getTexture() != Sprites::plantSprite.getTexture()) {
+							if (i.getItem().getGlobalBounds().contains(relMousePos) && i.getItem().getTexture() != Sprites::plantSprite.getTexture()) {
 								//Set position of chosen item
 								itemChosenSprite = i.getItem();
 								itemChosenSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
@@ -325,12 +333,36 @@ void Game::pollEvents() {
 						}
 					}
 
+					else if (inventory.whichTabActive == 0 && isMenuOpen) {
+						if (menu->options.at(1).optionBox.getGlobalBounds().contains(relMousePos)) {
+							for (auto& i : inventory.itemSlots) {
+								if (menuItem.getItem().getTexture() != Sprites::plantSprite.getTexture()) {
+									//Set position of chosen item
+									itemChosenSprite = menuItem.getItem();
+									itemChosenSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
+									//Get quantity and set its position for rendering
+									itemChosenQuantityNumber = menuItem.getQuantity();
+									itemChosenQuantity = menuItem.getQuantityDisplay();
+									itemChosenQuantity.setPosition(getRightDownCorner().x - 80 + 60, getRightDownCorner().y - 160 + 60);
+									toolChosen = 2;
+									isItemChosen = true;
+									isInventoryOpen = false;
+									delete menu;
+									isMenuOpen = false;
+								}
+							}
+						}
+						else if (menu->options.at(0).optionBox.getGlobalBounds().contains(relMousePos)) {
+							inventory.activateSellButton(true);
+						}
+					}
+
 					//Shop
 					if (inventory.whichTabActive == 1) {
 						for (auto& i : inventory.shopCards) {
 
 							//Select one of the cards
-							if (i.cardBackgroundSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
+							if (i.cardBackgroundSprite.getGlobalBounds().contains(relMousePos)) {
 								inventory.currentItemAmount = 10;
 								inventory.setCurrentItemPrice(i.itemPrice);
 								i.setSelected(true);
@@ -338,7 +370,7 @@ void Game::pollEvents() {
 
 							if (i.getSelected()) {
 								//Change item amount
-								if (inventory.itemChangeAmountSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y) && i.getSelected()) {
+								if (inventory.itemChangeAmountSprite.getGlobalBounds().contains(relMousePos) && i.getSelected()) {
 									inventory.changeItemAmount(relMousePos);
 									inventory.setCurrentItemPrice(i.itemPrice);
 								}
@@ -351,14 +383,14 @@ void Game::pollEvents() {
 									inventory.activateBuyButton(false);
 								}
 								//If activated, able to buy
-								if (inventory.buyButtonSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y) && inventory.buyButtonSprite.getTexture() == Sprites::buyButtonColorSprite.getTexture()) {
+								if (inventory.buyButtonSprite.getGlobalBounds().contains(relMousePos) && inventory.buyButtonSprite.getTexture() == Sprites::buyButtonColorSprite.getTexture()) {
 									inventory.addItem(Item(i.getItem(), inventory.currentItemAmount));
 									updateBalance(-inventory.totalPrice);
 									inventory.whichTabActive = 0;
 								}
 							}
 
-							if (!inventory.buyButtonSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y) && !i.cardBackgroundSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y) && !inventory.itemChangeAmountSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
+							if (!inventory.buyButtonSprite.getGlobalBounds().contains(relMousePos) && !i.cardBackgroundSprite.getGlobalBounds().contains(relMousePos) && !inventory.itemChangeAmountSprite.getGlobalBounds().contains(relMousePos)) {
 								bool isAnySel = false;
 								i.setSelected(false);
 								for (auto& s : inventory.shopCards) {
@@ -373,20 +405,21 @@ void Game::pollEvents() {
 							}
 						}
 					}
+
+
 				}
 
-				//We don't want to move if inventory is opened
 				else {
 					//Tool check
-					if (handToolSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
+					if (handToolSprite.getGlobalBounds().contains(relMousePos)) {
 						toolChosen = 0;
 						isItemChosen = false;
 					}
-					if (shovelToolSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
+					if (shovelToolSprite.getGlobalBounds().contains(relMousePos)) {
 						toolChosen = 1;
 						isItemChosen = false;
 					}
-					if (sickleToolSprite.getGlobalBounds().contains(relMousePos.x, relMousePos.y)) {
+					if (sickleToolSprite.getGlobalBounds().contains(relMousePos)) {
 						toolChosen = 3;
 						isItemChosen = false;
 					}
@@ -394,11 +427,33 @@ void Game::pollEvents() {
 				
 			}
 
+			//If clicked outside of menu - delete it
+			if (isMenuOpen) {
+				if (!menu->bounds.contains(relMousePos)) {
+					isMenuOpen = false;
+					delete menu;
+				}
+			}
+
+			//Actions for right button in inventory
+			else if (event.mouseButton.button == 1 && isInventoryOpen) {
+				if (inventory.whichTabActive == 0) {
+					for (auto& i : inventory.itemSlots) {
+						if (i.getItem().getGlobalBounds().contains(relMousePos)) {
+							menu = new Menu(relMousePos);
+							menuItem = i;
+							isMenuOpen = true;
+						}
+					}
+				}
+			}
+
 			// Move for right button
 			else if (event.mouseButton.button == 1 && !isInventoryOpen) { 
 				moving = true;
 				oldPos = sf::Vector2f(mousePos);
 			}
+			
 			break;
 
 		case  sf::Event::MouseButtonReleased:
@@ -447,11 +502,17 @@ void Game::frameUpdate() {
 	updateTools();
 	deltaTime = clockDelta.restart().asSeconds();
 	nextTime = clock.getElapsedTime();
-	if (nextTime.asMilliseconds() - lastTime.asMilliseconds() >= 1000) {
+	if (nextTime.asMilliseconds() - lastTime.asMilliseconds() >= 100) {
 		for (auto& i : tiles) {
 			i.updatePlant(clock.getElapsedTime());
 		}
 		lastTime = clock.getElapsedTime();
+	}
+
+	if (isMenuOpen) {
+		for (auto& i : menu->options) {
+			i.checkHovered(relMousePos);
+		}
 	}
 
 	//Update coin animation
@@ -470,6 +531,9 @@ void Game::render() {
 	if (isInventoryOpen) {
 		renderInventory();
 	}
+	if (menu != nullptr) {
+		menu->renderMenu(*window);
+	}
 
 	window->display();
 }
@@ -483,7 +547,7 @@ void Game::renderTiles() {
 	//Drawing tiles
 	for (int i = 0; i < tiles.size(); i++) {
 		//Drawing
-		if (tiles[i].getBg().getGlobalBounds().contains(relMousePos.x, relMousePos.y) && !moving && !tiles[i].hasFence && !isInventoryOpen) {
+		if (tiles[i].getBg().getGlobalBounds().contains(relMousePos) && !moving && !tiles[i].hasFence && !isInventoryOpen) {
 			tiles[i].isHovered = true;
 			whichTileHovered = i;
 		}

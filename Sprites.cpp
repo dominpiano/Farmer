@@ -63,6 +63,10 @@ Sprites::Sprites() {
 	buyButtonGraySprite.setTexture(buyButtonGrayTexture);
 	buyButtonColorTexture.loadFromFile("assets/textures/inventory/buyButtonColor.png");
 	buyButtonColorSprite.setTexture(buyButtonColorTexture);
+	sellButtonGrayTexture.loadFromFile("assets/textures/inventory/sellButtonGray.png");
+	sellButtonGraySprite.setTexture(sellButtonGrayTexture);
+	sellButtonColorTexture.loadFromFile("assets/textures/inventory/sellButtonColor.png");
+	sellButtonColorSprite.setTexture(sellButtonColorTexture);
 	itemChangeAmountTexture.loadFromFile("assets/textures/inventory/itemAmount.png");
 	itemChangeAmountSprite.setTexture(itemChangeAmountTexture);
 
@@ -114,6 +118,8 @@ sf::Sprite Sprites::shopActiveTabSprite;
 sf::Sprite Sprites::shopDeactiveTabSprite;
 sf::Sprite Sprites::buyButtonGraySprite;
 sf::Sprite Sprites::buyButtonColorSprite;
+sf::Sprite Sprites::sellButtonGraySprite;
+sf::Sprite Sprites::sellButtonColorSprite;
 sf::Sprite Sprites::itemChangeAmountSprite;
 
 //Shop cards

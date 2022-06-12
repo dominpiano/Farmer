@@ -13,6 +13,30 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Pliki nagłówkowe\Resources">
+      <UniqueIdentifier>{b7c564b2-a0b4-4e8e-8adb-1e0f6792aee3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Menu">
+      <UniqueIdentifier>{af6f187e-a027-4143-9d3a-1eb197051029}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Graphics">
+      <UniqueIdentifier>{15ec0060-6463-4bf9-a144-31790a45256f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Inventory">
+      <UniqueIdentifier>{1becea6d-2893-4f64-bc49-d991abac56eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Menu">
+      <UniqueIdentifier>{9d19d44d-3728-4b42-ba29-20afc336e369}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Graphics">
+      <UniqueIdentifier>{f806f39f-49c8-47b2-a888-4e66cdb25d46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Inventory">
+      <UniqueIdentifier>{443c1f4c-24cf-4a90-afe8-625cb71c4302}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Resources">
+      <UniqueIdentifier>{b9cb3df6-a362-49ee-9510-cb059fe2d121}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -24,23 +48,29 @@
     <ClCompile Include="Tile.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="Sprites.cpp">
-      <Filter>Pliki źródłowe</Filter>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Pliki źródłowe\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Inventory.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
-    <ClCompile Include="ShopCard.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
-    <ClCompile Include="Resources.cpp">
-      <Filter>Pliki źródłowe</Filter>
+      <Filter>Pliki źródłowe\Inventory</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
-      <Filter>Pliki źródłowe</Filter>
+      <Filter>Pliki źródłowe\Inventory</Filter>
     </ClCompile>
-    <ClCompile Include="Animation.cpp">
-      <Filter>Pliki źródłowe</Filter>
+    <ClCompile Include="ShopCard.cpp">
+      <Filter>Pliki źródłowe\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Pliki źródłowe\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Option.cpp">
+      <Filter>Pliki źródłowe\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprites.cpp">
+      <Filter>Pliki źródłowe\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources.cpp">
+      <Filter>Pliki źródłowe\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -50,25 +80,34 @@
     <ClInclude Include="Tile.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="Sprites.h">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
-    <ClInclude Include="Inventory.h">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
-    <ClInclude Include="ShopCard.h">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
     <ClInclude Include="Resources.h">
-      <Filter>Pliki nagłówkowe</Filter>
+      <Filter>Pliki nagłówkowe\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>Pliki nagłówkowe</Filter>
+    <ClInclude Include="Sprites.h">
+      <Filter>Pliki nagłówkowe\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="PlantType.h">
-      <Filter>Pliki nagłówkowe</Filter>
+    <ClInclude Include="Menu.h">
+      <Filter>Pliki nagłówkowe\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Option.h">
+      <Filter>Pliki nagłówkowe\Menu</Filter>
     </ClInclude>
     <ClInclude Include="Animation.h">
+      <Filter>Pliki nagłówkowe\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>Pliki nagłówkowe\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Pliki nagłówkowe\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="ShopCard.h">
+      <Filter>Pliki nagłówkowe\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="PlantType.h">
+      <Filter>Pliki nagłówkowe\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionType.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
   </ItemGroup>

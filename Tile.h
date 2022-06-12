@@ -22,6 +22,7 @@ private:
 	sf::Sprite plantSprite;
 	sf::Time plantPlacedTime; //Working also as a "lap" time
 	float timeRequired; //Required time to fully grow a plant
+	float deviation = 0;
 	int plantStage = 0;
 	int stagesRequired;
 public:

@@ -165,6 +165,8 @@
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Option.cpp" />
     <ClCompile Include="Resources.cpp" />
     <ClCompile Include="ShopCard.cpp" />
     <ClCompile Include="Sprites.cpp" />
@@ -175,6 +177,9 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="Option.h" />
+    <ClInclude Include="OptionType.h" />
     <ClInclude Include="PlantType.h" />
     <ClInclude Include="Resources.h" />
     <ClInclude Include="ShopCard.h" />

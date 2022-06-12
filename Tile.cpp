@@ -48,7 +48,9 @@ void Tile::setPlant(PlantType type, int stages, sf::Time plantTime, float timeRe
 	plantType = type;
 	stagesRequired = stages;
 	plantPlacedTime = plantTime;
-	timeRequired = timeReq;
+	deviation = ((rand() % 100) < 50 ) ? (float(rand() % 3) + (rand() % 10 + 1)/10.f) : -(float(rand() % 3) + (rand() % 10 + 1) / 10.f);
+	//std::cout << deviation << std::endl;
+	timeRequired = timeReq + deviation;
 	hasPlant = true;
 }
 PlantType Tile::getPlant() {
@@ -90,8 +92,8 @@ void Tile::updatePlant(sf::Time actTime) {
 			}
 		}
 		if (actTime.asSeconds() - plantPlacedTime.asSeconds() >= timeRequired / stagesRequired && plantStage < stagesRequired) {
-			//std::cout << "bruh" << std::endl;
 			plantPlacedTime = actTime;
+			//TODO: randomize time a little bit to not grow equally
 			switch (plantType) {
 			case PlantType::CARROT:
 				plantSprite = Sprites::carrotSprites[plantStage];
