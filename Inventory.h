@@ -30,6 +30,7 @@ public:
 
 	//Inv sell etc.
 	sf::Sprite sellButtonSprite;
+	//sf::Sprite s
 
 	//Shop buy etc.
 	sf::Sprite buyButtonSprite;

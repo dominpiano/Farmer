@@ -27,6 +27,8 @@ void Game::updateQuantitiesOfItems() {
 				if (inventory.itemSlots[j * 8 + i].getQuantity() != itemChosenQuantityNumber) {
 					if (itemChosenQuantityNumber == 0) {
 						inventory.itemSlots[j * 8 + i].removeItem();
+						toolChosen = 0;
+						isItemChosen = false;
 					}
 					else {
 						inventory.itemSlots[j * 8 + i].setQuantity(itemChosenQuantityNumber);
@@ -272,17 +274,12 @@ void Game::pollEvents() {
 							tiles[whichTileHovered].setPlant(PlantType::POTATO, 4, clock.getElapsedTime(), 100.f);
 						}
 						else if (itemChosenSprite.getTexture() == Sprites::wheatSeedsSprite.getTexture()) {
-							tiles[whichTileHovered].setPlant(PlantType::WHEAT, 4, clock.getElapsedTime(), 140.f);
+							tiles[whichTileHovered].setPlant(PlantType::WHEAT, 4, clock.getElapsedTime(), 130.f);
 						}
 						itemChosenQuantityNumber--;
 						itemChosenQuantity.setString(std::to_string(itemChosenQuantityNumber));
 						tiles[whichTileHovered].updatePlant(clock.getElapsedTime());
 						updateQuantitiesOfItems();
-					}
-					if (itemChosenQuantityNumber == 0) {
-						toolChosen = 0;
-						isItemChosen = false;
-						itemChosenQuantity.setString("");
 					}
 					break;
 				case 3: 
@@ -313,12 +310,13 @@ void Game::pollEvents() {
 				
 				//We don't want to move if inventory is opened
 				if (isInventoryOpen) {
+					inventory.activateSellButton(false);
 					inventory.checkTabChanged(relMousePos);
 
 					//Inventory
 					if (inventory.whichTabActive == 0 && !isMenuOpen) {
 						for (auto& i : inventory.itemSlots) {
-							if (i.getItem().getGlobalBounds().contains(relMousePos) && i.getItem().getTexture() != Sprites::plantSprite.getTexture()) {
+							if (i.getItem().getGlobalBounds().contains(relMousePos) && i.getItem().getTexture() != Sprites::plantSprite.getTexture() && i.slotHasItem) {
 								//Set position of chosen item
 								itemChosenSprite = i.getItem();
 								itemChosenSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
@@ -335,25 +333,54 @@ void Game::pollEvents() {
 
 					else if (inventory.whichTabActive == 0 && isMenuOpen) {
 						if (menu->options.at(1).optionBox.getGlobalBounds().contains(relMousePos)) {
-							for (auto& i : inventory.itemSlots) {
-								if (menuItem.getItem().getTexture() != Sprites::plantSprite.getTexture()) {
-									//Set position of chosen item
-									itemChosenSprite = menuItem.getItem();
-									itemChosenSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
-									//Get quantity and set its position for rendering
-									itemChosenQuantityNumber = menuItem.getQuantity();
-									itemChosenQuantity = menuItem.getQuantityDisplay();
-									itemChosenQuantity.setPosition(getRightDownCorner().x - 80 + 60, getRightDownCorner().y - 160 + 60);
-									toolChosen = 2;
-									isItemChosen = true;
-									isInventoryOpen = false;
-									delete menu;
-									isMenuOpen = false;
-								}
+							if (menuItem->getItem().getTexture() != Sprites::plantSprite.getTexture()) {
+								//Set position of chosen item
+								itemChosenSprite = menuItem->getItem();
+								itemChosenSprite.setPosition(getRightDownCorner().x - 80, getRightDownCorner().y - 160);
+								//Get quantity and set its position for rendering
+								itemChosenQuantityNumber = menuItem->getQuantity();
+								itemChosenQuantity = menuItem->getQuantityDisplay();
+								itemChosenQuantity.setPosition(getRightDownCorner().x - 80 + 60, getRightDownCorner().y - 160 + 60);
+								toolChosen = 2;
+								isItemChosen = true;
+								isInventoryOpen = false;
+								isMenuOpen = false;
+								delete menu;
 							}
 						}
 						else if (menu->options.at(0).optionBox.getGlobalBounds().contains(relMousePos)) {
-							inventory.activateSellButton(true);
+							isMenuOpen = false;
+							delete menu;
+
+							toolChosen = 0;
+							isItemChosen = false;
+							
+							if (menuItem->getItem().getTexture() == Sprites::potatoSeedsSprite.getTexture()) {
+								cout << menuItem->getQuantity() << endl;
+								updateBalance(3 * menuItem->getQuantity());
+							}
+							else if (menuItem->getItem().getTexture() == Sprites::wheatSeedsSprite.getTexture()) {
+								updateBalance(1 * menuItem->getQuantity());
+							}
+							else if (menuItem->getItem().getTexture() == Sprites::cucumberSeedsSprite.getTexture()) {
+								updateBalance(3 * menuItem->getQuantity());
+							}
+							else if (menuItem->getItem().getTexture() == Sprites::carrotSeedsSprite.getTexture()) {
+								updateBalance(4 * menuItem->getQuantity());
+							}
+							else if (menuItem->getItem().getTexture() == Sprites::plantSprite.getTexture() && menuItem->getItem().getTextureRect().top == 0) {
+								updateBalance(10 * menuItem->getQuantity());
+							}
+							else if (menuItem->getItem().getTexture() == Sprites::plantSprite.getTexture() && menuItem->getItem().getTextureRect().top == 100) {
+								updateBalance(7 * menuItem->getQuantity());
+							}
+							else if (menuItem->getItem().getTexture() == Sprites::plantSprite.getTexture() && menuItem->getItem().getTextureRect().top == 300) {
+								updateBalance(4 * menuItem->getQuantity());
+							}
+
+							itemChosenQuantityNumber = 0;
+							menuItem->setQuantity(0);
+							updateQuantitiesOfItems();
 						}
 					}
 
@@ -441,8 +468,11 @@ void Game::pollEvents() {
 					for (auto& i : inventory.itemSlots) {
 						if (i.getItem().getGlobalBounds().contains(relMousePos)) {
 							menu = new Menu(relMousePos);
-							menuItem = i;
+							menuItem = &i;
+							isItemChosen = true;
+							itemChosenSprite = i.getItem();
 							isMenuOpen = true;
+							break;
 						}
 					}
 				}

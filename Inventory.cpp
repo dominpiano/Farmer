@@ -161,7 +161,7 @@ void Inventory::renderInventory(sf::RenderWindow& window) {
 	case 0:
 		window.draw(invActiveTabSprite);
 		window.draw(shopDeactiveTabSprite);
-		window.draw(sellButtonSprite);
+		//window.draw(sellButtonSprite); //Moze kiedys!
 		break;
 	case 1:
 		window.draw(invDeactiveTabSprite);

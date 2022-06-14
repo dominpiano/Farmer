@@ -57,7 +57,7 @@ private:
 	//Menu in inventory
 	Menu* menu = nullptr;
 	bool isMenuOpen = false;
-	Item menuItem;
+	Item* menuItem;
 
 	//Background things
 	sf::Color bgColor = sf::Color(127, 152, 59);
